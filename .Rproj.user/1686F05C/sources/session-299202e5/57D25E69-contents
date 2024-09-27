@@ -2,3 +2,11 @@
 title: "Cleaning"
 ---
 
+## Goals of this notebook
+
+The steps we'll take to prepare our data:
+
+- Download the data
+- Import it into our notebook
+- Clean up data types and columns
+- Export the data for next notebook
