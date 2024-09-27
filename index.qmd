@@ -1,11 +1,11 @@
 ---
-title: "versa-analysis-maria"
+title: "VERSA analysis"
 ---
+
+This project is dedicated to analyzing the VERSA program that looks at Operation Lone Star arrests throughout the stat poof Texas. 
+
+The data was downloaded from a public records request. 
+
 
 This is a Quarto website.
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
-
-```{r}
-1 + 1
-```
