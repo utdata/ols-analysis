@@ -5,5 +5,19 @@
     "title": "About",
     "section": "",
     "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "01-cleaning.html",
+    "href": "01-cleaning.html",
+    "title": "Cleaning",
+    "section": "",
+    "text": "The steps we’ll take to prepare our data:\n\nDownload the data\nImport it into our notebook\nClean up data types and columns\nExport the data for next notebook"
+  },
+  {
+    "objectID": "01-cleaning.html#goals-of-this-notebook",
+    "href": "01-cleaning.html#goals-of-this-notebook",
+    "title": "Cleaning",
+    "section": "",
+    "text": "The steps we’ll take to prepare our data:\n\nDownload the data\nImport it into our notebook\nClean up data types and columns\nExport the data for next notebook"
   }
 ]
