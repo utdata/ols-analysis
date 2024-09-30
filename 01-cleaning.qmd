@@ -48,7 +48,7 @@ Here we're importing the VERSA data spreadsheet that I already have downloaded t
 
 
 ```{r}
-versa_analysis<- read_csv("data-raw/versa_analysis.csv")
+versa_analysis<- read_csv("data-raw/versa_analysis.csv") |> clean_names()
 
 versa_analysis
 ```
@@ -56,5 +56,46 @@ versa_analysis
 ```{r}
 versa_analysis |> glimpse()
 ```
+
+
+Notes for VERSA cleaning: 
+- "Given three" refers to two middle names, only very few individuals in the list have this listed 
+- Years are given as "apparent age" need to change this to the actual age number to line up to SPURS "Person Age" 
+- Change ethnicity/race to a code or not? 
+- 
+
+## Fixing the dates 
+
+We want to make sure that our dates are in month, date, year format for consistency in our analysis. 
+
+```{r}
+versa_analysis_date <- versa_analysis |>
+ mutate(
+   charge_date = mdy(arrest_date)
+  )
+
+versa_analysis_date |> glimpse()
+```
+
+Summary Stats: 
+
+```{r}
+versa_analysis_date |> summary()
+```
+
+
+## Fixing the age 
+
+We want our VERSA data to match up to SPURS when it comes the the "Person Age" data column. In order to do that we subtract this year's date minus the "apparent_age" column of the VERSA data. This gives us the age in the same numerical format.
+
+```{r}
+versa_analysis_age <- versa_analysis |>
+  mutate(
+    person_age = 2024- apparent_age
+    )
+
+versa_analysis_age |> glimpse()
+```
+
 
 
