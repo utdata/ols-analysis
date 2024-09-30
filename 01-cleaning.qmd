@@ -38,7 +38,7 @@ The data was obtained by a Public Records Request from KUT.
 
 ```{r}
 download.file(
-  "https://docs.google.com/spreadsheets/d/1KQruvHPoUPHGChNvvgZb_hYbeU4F0pFl2VYiUi2iJ0s/edit?usp=sharing","data-raw/versa_analysis.csv", mode = "wb"
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vT86k4riODyqAQeAQB0kB7NJlXDBQSJu19cUzNdJNZzUUXFLWuQHl5rmWZfXicGl2zqzztB6Hx8Gl-x/pub?output=csv","data-raw/versa_analysis.csv", mode = "wb"
 )
 ```
 
