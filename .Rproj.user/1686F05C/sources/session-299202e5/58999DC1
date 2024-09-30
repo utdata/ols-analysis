@@ -1,27 +1,28 @@
 {
-    "id": "57D25E69",
+    "id": "58999DC1",
     "path": "~/rwd/UTMediaFellowship- water_project/versa-analysis-maria/01-cleaning.qmd",
     "project_path": "01-cleaning.qmd",
     "type": "quarto_markdown",
-    "hash": "197451831",
+    "hash": "2012018624",
     "contents": "",
     "dirty": false,
-    "created": 1727458041511.0,
+    "created": 1727717962269.0,
     "source_on_save": false,
-    "relative_order": 4,
+    "relative_order": 1,
     "properties": {
         "tempName": "Untitled1",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "52,26",
-        "scrollLine": "50"
+        "cursorPosition": "21,0",
+        "scrollLine": "5",
+        "last_setup_crc32": "299202e579e3dac8"
     },
     "folds": "",
-    "lastKnownWriteTime": 1727465370,
+    "lastKnownWriteTime": 1727717975,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1727465370725,
+    "last_content_update": 1727717975317,
     "read_only": false,
     "read_only_alternatives": []
 }
