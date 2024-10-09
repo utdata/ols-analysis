@@ -60,9 +60,7 @@ versa_analysis |> glimpse()
 
 Notes for VERSA cleaning: 
 - "Given three" refers to two middle names, only very few individuals in the list have this listed 
-- Years are given as "apparent age" need to change this to the actual age number to line up to SPURS "Person Age" 
-- Change ethnicity/race to a code or not? 
-- 
+- Years are given as "apparent age" changed this to the actual age number to line up to SPURS "Person Age" 
 
 ## Fixing the dates 
 
@@ -77,6 +75,10 @@ versa_analysis_date <- versa_analysis |>
 versa_analysis_date |> glimpse()
 ```
 
+```{r}
+versa_analysis_date
+```
+
 Summary Stats: 
 
 ```{r}
@@ -89,13 +91,45 @@ versa_analysis_date |> summary()
 We want our VERSA data to match up to SPURS when it comes the the "Person Age" data column. In order to do that we subtract this year's date minus the "apparent_age" column of the VERSA data. This gives us the age in the same numerical format.
 
 ```{r}
-versa_analysis_age <- versa_analysis |>
+versa_analysis_age <- versa_analysis_date |>
   mutate(
     person_age = 2024- apparent_age
     )
 
 versa_analysis_age |> glimpse()
 ```
+
+## Fixing Names 
+We want to change the columns for the names of the offenders, so it matches up to the SPURS data set. Theb we want to change the officer column to "officer" and 
+
+```{r}
+versa_analysis_names <- versa_analysis_age |>
+  mutate(
+    person_first_name = given_one, 
+    person_second_name = given_two, 
+    person_third_name = given_three, 
+    person_last_name = individual_surname,
+    arrest_officer = arrest_officer1, 
+    arrest_county = county_name
+    )
+
+versa_analysis_names |> glimpse()
+```
+
+## Filter out unnnessary columns 
+
+After cleaning the names of the columns, I want to remove the columns with the old column names.I will use the select function to select the columns I don't want. 
+
+```{r}
+versa_analysis_fiter <- versa_analysis_names |>
+  select(
+    -c(apparent_age, given_one, given_two, given_three, individual_surname, arrest_officer1, county_name, arrest_date)
+  )
+
+versa_analysis_fiter |> glimpse()
+```
+
+
 
 
 
