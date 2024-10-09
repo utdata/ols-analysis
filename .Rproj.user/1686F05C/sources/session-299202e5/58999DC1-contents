@@ -110,26 +110,52 @@ versa_analysis_names <- versa_analysis_age |>
     person_third_name = given_three, 
     person_last_name = individual_surname,
     arrest_officer = arrest_officer1, 
-    arrest_county = county_name
+    arrest_county = county_name, 
+    arrest_state = jurisdiction, 
+    code = class,
+    severity_code = severity_code_group, 
+    person_race = race
     )
 
 versa_analysis_names |> glimpse()
 ```
+
+## Create new column to match SPURS race column 
+
+Because the SPURS dataset uses the "race" column to identify both ethnicity and race, we created a new column that mirrors the SPURS way of documenting people's profiles. 
+
+```{r}
+versa_analysis_new <- versa_analysis_names |>
+  mutate(
+    ethnicity_race = if_else(ethnicity== "H", ethnicity, person_race)
+  )
+
+versa_analysis_new |> glimpse()
+
+```
+
 
 ## Filter out unnnessary columns 
 
 After cleaning the names of the columns, I want to remove the columns with the old column names.I will use the select function to select the columns I don't want. 
 
 ```{r}
-versa_analysis_fiter <- versa_analysis_names |>
-  select(
-    -c(apparent_age, given_one, given_two, given_three, individual_surname, arrest_officer1, county_name, arrest_date)
-  )
+versa_analysis_filter <- versa_analysis_new |>
+ select(-c(apparent_age, given_one, given_two, given_three, individual_surname, arrest_officer1, jurisdiction, county_name, arrest_date, statute, class, severity_code_group, race))
 
-versa_analysis_fiter |> glimpse()
+versa_analysis_filter |> glimpse()
+  
 ```
 
 
+
+## Importing cleaned data 
+
+```{r}
+ versa_analysis_clean<- versa_analysis_filter 
+  
+versa_analysis_clean |> glimpse()
+```
 
 
 

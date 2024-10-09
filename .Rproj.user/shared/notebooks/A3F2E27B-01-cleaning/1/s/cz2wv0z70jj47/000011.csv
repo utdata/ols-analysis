@@ -1,14 +1,23 @@
-"0","versa_analysis_date <- versa_analysis |>"
-"0"," mutate("
-"0","   charge_date = mdy(arrest_date)"
-"0","  )"
+"0","versa_analysis_names <- versa_analysis_age |>"
+"0","  mutate("
+"0","    person_first_name = given_one, "
+"0","    person_second_name = given_two, "
+"0","    person_third_name = given_three, "
+"0","    person_last_name = individual_surname,"
+"0","    arrest_officer = arrest_officer1, "
+"0","    arrest_county = county_name, "
+"0","    arrest_state = jurisdiction, "
+"0","    code = class,"
+"0","    severity_code = severity_code_group, "
+"0","    person_race = race"
+"0","    )"
 "0",""
-"0","versa_analysis_date |> glimpse()"
+"0","versa_analysis_names |> glimpse()"
 "1","Rows: 17,256"
 "1",""
 "1","
 "
-"1","Columns: 19"
+"1","Columns: 30"
 "1",""
 "1","
 "
@@ -30,7 +39,18 @@ $ ethnicity           [3m[38;5;246m<chr>[39m[23m ""H"", ""H"", ""H"", ""H"",
 $ race                [3m[38;5;246m<chr>[39m[23m ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", …
 $ gender_code         [3m[38;5;246m<chr>[39m[23m ""M"", ""M"", ""M"", ""M"", ""M"", ""F"", ""M"", ""M"", ""M"", ""M"", ""M"", ""M"", ""M"", ""M"", ""M"", ""M"", ""M"", …
 $ apparent_age        [3m[38;5;246m<dbl>[39m[23m 1997, 1997, 1974, 1987, NA, 1998, 2003, NA, 1995, NA, 1994, 2003, 1999, 1987, 1989, 1…
-$ charge_date         [3m[38;5;246m<date>[39m[23m 2023-01-03, 2023-01-03, 2023-01-21, 2023-01-22, 2023-01-22, 2023-01-22, 2023-01-22, …"
+$ charge_date         [3m[38;5;246m<date>[39m[23m 2023-01-03, 2023-01-03, 2023-01-21, 2023-01-22, 2023-01-22, 2023-01-22, 2023-01-22, …
+$ person_age          [3m[38;5;246m<dbl>[39m[23m 27, 27, 50, 37, NA, 26, 21, NA, 29, NA, 30, 21, 25, 37, 35, 30, 38, 22, 22, 21, 39, 2…
+$ person_first_name   [3m[38;5;246m<chr>[39m[23m ""CRISPIN"", ""CRISPIN"", ""MOISES"", ""FERMIN"", ""JOSE"", ""LIZBETH"", ""JOSE"", ""JOSE"", ""OSCAR"",…
+$ person_second_name  [3m[38;5;246m<chr>[39m[23m ""III"", ""III"", NA, NA, ""CARLOS"", NA, ""GUADALUPE"", ""ENRIQUE"", NA, ""GUSTAVO"", NA, ""YAHIR…
+$ person_third_name   [3m[38;5;246m<chr>[39m[23m NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
+$ person_last_name    [3m[38;5;246m<chr>[39m[23m ""MERCADO"", ""MERCADO"", ""DE LA CRUZ LOPEZ"", ""RODRIGUEZ-CORDOVA"", ""CORDOVA-MONTIEL"", ""GO…
+$ arrest_officer      [3m[38;5;246m<dbl>[39m[23m 15882, 15882, 15969, 15001, 15001, 15001, 15001, 15001, 15001, 15001, 15001, 16000, 1…
+$ arrest_county       [3m[38;5;246m<chr>[39m[23m ""Dimmit"", ""Dimmit"", ""Dimmit"", ""Kinney"", ""Kinney"", ""Kinney"", ""Kinney"", ""Kinney"", ""Kinn…
+$ arrest_state        [3m[38;5;246m<chr>[39m[23m ""TX"", ""TX"", ""TX"", ""TX"", ""TX"", ""TX"", ""TX"", ""TX"", ""TX"", ""TX"", ""TX"", ""TX"", ""TX"", ""TX"", ""…
+$ code                [3m[38;5;246m<chr>[39m[23m ""HS"", ""HS"", ""CP"", ""PC"", ""PC"", ""PC"", ""PC"", ""PC"", ""PC"", ""PC"", ""PC"", ""PC"", ""PC"", ""PC"", ""…
+$ severity_code       [3m[38;5;246m<chr>[39m[23m ""Versa Misdemeanor Charges"", ""VT Felony Charges"", ""VT Federal/Other Charges"", ""Versa …
+$ person_race         [3m[38;5;246m<chr>[39m[23m ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", ""W"", …"
 "1",""
 "1","
 "
