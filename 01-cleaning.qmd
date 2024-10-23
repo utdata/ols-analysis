@@ -111,10 +111,10 @@ versa_analysis_names <- versa_analysis_age |>
     person_last_name = individual_surname,
     arrest_officer = arrest_officer1, 
     arrest_county = county_name, 
-    arrest_state = jurisdiction, 
     code = class,
     severity_code = severity_code_group, 
-    person_race = race
+    person_race_abbr = race, 
+    person_gender_abbr = gender_code
     )
 
 versa_analysis_names |> glimpse()
@@ -127,7 +127,8 @@ Because the SPURS dataset uses the "race" column to identify both ethnicity and 
 ```{r}
 versa_analysis_new <- versa_analysis_names |>
   mutate(
-    ethnicity_race = if_else(ethnicity== "H", ethnicity, person_race)
+    person_race_abbr = if_else(ethnicity== "H", ethnicity, person_race_abbr), 
+    arrest_state = case_match(jurisdiction, "TX" ~ "TEXAS")
   )
 
 versa_analysis_new |> glimpse()
@@ -141,20 +142,19 @@ After cleaning the names of the columns, I want to remove the columns with the o
 
 ```{r}
 versa_analysis_filter <- versa_analysis_new |>
- select(-c(apparent_age, given_one, given_two, given_three, individual_surname, arrest_officer1, jurisdiction, county_name, arrest_date, statute, class, severity_code_group, race))
+ select(-c(apparent_age, given_one, given_two, given_three, individual_surname, arrest_officer1, jurisdiction, county_name, arrest_date, statute, class, severity_code_group, race, gender_code))
 
 versa_analysis_filter |> glimpse()
   
 ```
 
-
+ 
+- remove versa from severity code, figure out VT and remove? 
 
 ## Importing cleaned data 
 
 ```{r}
- versa_analysis_clean<- versa_analysis_filter 
-  
-versa_analysis_clean |> glimpse()
+ 
 ```
 
 
