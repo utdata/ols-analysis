@@ -151,6 +151,13 @@ versa_analysis_filter |> glimpse()
  
 - remove versa from severity code, figure out VT and remove? 
 
+## Removing extra labels in "severity_code" 
+
+```{r}
+
+```
+
+
 ## Importing cleaned data 
 
 ```{r}
