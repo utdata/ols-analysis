@@ -148,10 +148,9 @@ versa_analysis_filter |> glimpse()
   
 ```
 
- 
-- remove versa from severity code, figure out VT and remove? 
-
 ## Removing extra labels in "severity_code" and creating clean column 
+
+We noted that Versa and SPURS record charges differently under "severity_code." We aren't too sure if the Versa and VT label is equivalent to SPURS labels so we created a new column for cleaning purposes and we won't remove the original column. This new column will be "severity_code_clean." 
 
 ```{r}
 versa_code_clean <- versa_analysis_filter |>
@@ -164,7 +163,6 @@ versa_code_clean
 
 ```
 
-do case match for everything! 
 ## Importing cleaned data 
 
 ```{r}
