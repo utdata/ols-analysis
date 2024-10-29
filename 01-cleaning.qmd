@@ -151,13 +151,20 @@ versa_analysis_filter |> glimpse()
  
 - remove versa from severity code, figure out VT and remove? 
 
-## Removing extra labels in "severity_code" 
+## Removing extra labels in "severity_code" and creating clean column 
 
 ```{r}
+versa_code_clean <- versa_analysis_filter |>
+  mutate(
+    severity_code_clean = case_match(severity_code, "Versa Misdemeanor Charges" ~ "Misdemeanor Charges", "VT Felony Charges" ~ "Felony Charges", "VT Federal/Other Charges" ~ "Federal/Other Charges"), 
+    .after = severity_code
+  )
+
+versa_code_clean
 
 ```
 
-
+do case match for everything! 
 ## Importing cleaned data 
 
 ```{r}
