@@ -109,12 +109,12 @@ versa_analysis_names <- versa_analysis_age |>
     person_second_name = given_two, 
     person_third_name = given_three, 
     person_last_name = individual_surname,
-    arrest_officer = arrest_officer1, 
+    officer_id = arrest_officer1, 
     arrest_county = county_name, 
     code = class,
     severity_code = severity_code_group, 
     person_race_abbr = race, 
-    person_gender_abbr = gender_code
+    person_gender_abbr = gender_code, 
     )
 
 versa_analysis_names |> glimpse()
@@ -163,6 +163,7 @@ versa_code_clean
 
 ```
 
+- officer_id is a dbl won't match up to SPURS
 ## Importing cleaned data 
 
 ```{r}
