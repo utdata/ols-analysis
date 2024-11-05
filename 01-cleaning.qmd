@@ -159,11 +159,10 @@ versa_code_clean <- versa_analysis_filter |>
     .after = severity_code
   )
 
-versa_code_clean
+versa_code_clean |> glimpse()
 
 ```
 
-- officer_id is a dbl won't match up to SPURS
 ## Importing cleaned data 
 
 ```{r}
