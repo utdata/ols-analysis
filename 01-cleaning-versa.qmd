@@ -166,7 +166,8 @@ versa_code_clean |> glimpse()
 ## Importing cleaned data 
 
 ```{r}
- 
+ versa_code_clean |>
+  write.csv("data-processed/01-clean-versa.rds")
 ```
 
 
