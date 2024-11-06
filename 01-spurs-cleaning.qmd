@@ -1,0 +1,145 @@
+---
+title: "Cleaning"
+---
+
+## Goals of this notebook
+
+The steps we'll take to prepare our data:
+
+- Download the data
+- Import it into our notebook
+- Clean up data types and columns
+- Export the data for next notebook
+
+## Setup
+
+```{r}
+#| label: setup
+#| message: false
+
+library(tidyverse)
+library(janitor)
+```
+
+## Importing data
+
+We're importing the data which was collected in a PIR by KUT's Lauren McGaughy. 
+
+```{r}
+spurs_raw <- read_csv("data-raw/spurs_raw_data.csv") |> clean_names()
+
+spurs_raw
+```
+
+
+## Changing name
+
+```{r}
+spurs_renamed <- spurs_raw |> 
+  rename(arrest_date_old = arrest_date,
+         charge = offense,
+         severity_code = level_group,
+         arrest_officer = arrested_by,
+         gender_code = person_sex,
+         statute = citation,
+         ethnicity_race = person_race
+         )
+
+spurs_renamed
+```
+
+
+## Changing dates
+
+```{r}
+spurs_date <- spurs_renamed |>
+  mutate(
+    charge_date = mdy_hm(arrest_date_old) |> date()
+  )
+```
+
+## Changing officer column
+
+```{r}
+spurs_officer_cleaning <- spurs_date |> 
+  mutate(new_officer = str_split_i(arrest_officer, " - ", 1), .after = arrest_officer,
+         id_officer = str_split_i(arrest_officer, " - ", 2)
+         )
+
+spurs_officer_cleaning
+```
+
+
+## Changing ethnicity column
+
+```{r}
+spurs_race <- spurs_officer_cleaning |> 
+  mutate(
+    person_race_abbr = case_match(ethnicity_race, "White" ~ "W", "Hispanic" ~ "H", "Hispanic or Latino" ~ "H", "Black" ~ "B", "Asian" ~ "A"),
+    person_gender_abbr = case_match(gender_code, "M - Male" ~ "M", "F - Female" ~ "F")
+    )
+
+spurs_race
+```
+
+
+## Changing names to uppercase
+
+```{r}
+spurs_uppercase <- spurs_race |> 
+  mutate(person_first_name = str_to_upper(person_first_name),
+         person_last_name = str_to_upper(person_last_name))
+
+spurs_uppercase
+```
+
+
+## Creating a charge count
+ 
+```{r}
+spurs_charge_count <- spurs_uppercase |>
+  group_by(arrest_date_old, arrest_county, arrest_division, arrest_id, arrest_state, arrest_urn, arrest_officer, new_officer, id_officer, statute, code, inv_number, severity_code, charge, person_first_name, person_last_name, ethnicity_race, gender_code, person_age, charge_date, person_race_abbr, person_gender_abbr ) |> 
+  summarise(charge_count = n()) |> mutate(charge_count = as.numeric(charge))
+
+spurs_charge_count
+```
+
+
+## Severity code
+
+```{r}
+spurs_code_clean <- spurs_charge_count |> 
+  mutate(severity_code_clean = str_remove(severity_code, "SPURS "), .after = severity_code)
+
+spurs_code_clean
+```
+
+
+## Selecting which columns I actually need
+
+```{r}
+spurs_clean <- spurs_code_clean |> ungroup() |> 
+  select(
+    arrest_county,
+    arrest_division,
+    arrest_id,
+    arrest_state,
+    arrest_urn,
+    arresting_officer = new_officer,
+    spurs_officer_id = id_officer,
+    statute,
+    code,
+    inv_number,
+    severity_code_clean,
+    charge,
+    person_first_name,
+    person_last_name,
+    person_age,
+    charge_date,
+    person_race_abbr,
+    person_gender_abbr,
+    charge_count
+  )
+
+spurs_clean |> glimpse()
+```
