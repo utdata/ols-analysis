@@ -143,3 +143,12 @@ spurs_clean <- spurs_code_clean |> ungroup() |>
 
 spurs_clean |> glimpse()
 ```
+
+## Exporting to data_processed
+
+```{r}
+spurs_clean |>
+write_rds("data-processed/01-clean-spurs.rds")
+```
+
+
