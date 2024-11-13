@@ -159,14 +159,16 @@ versa_code_clean <- versa_analysis_filter |>
     .after = severity_code
   )
 
-versa_code_clean |> glimpse()
+versa_code_clean 
 
 ```
+
 
 ## Importing cleaned data 
 
 ```{r}
- 
+ versa_code_clean |>
+  write.csv("data-processed/01-clean-versa.rds")
 ```
 
 
