@@ -35,9 +35,17 @@ spurs_data <- read_rds("data-processed/01-clean-spurs.rds") |> glimpse()
 ## Combine both clean data sets
 
 ```{r}
-data_combined <- versa_data |> 
+data_combine <- versa_data |> 
   bind_rows(spurs_data)
 
-data_combined
+data_combine
 ```
+
+## Export combined file 
+
+```{r}
+data_combine |>
+write_rds("data-processed/02-combine.rds")
+```
+
 
