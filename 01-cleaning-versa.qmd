@@ -168,7 +168,7 @@ versa_code_clean
 
 ```{r}
  versa_code_clean |>
-  write.csv("data-processed/01-clean-versa.rds")
+  write_rds("data-processed/01-clean-versa.rds")
 ```
 
 
