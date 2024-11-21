@@ -1,0 +1,72 @@
+---
+title: "Analysis"
+---
+
+Goals of this notebook: 
+
+- What do these numbers show us about what kinds of crimes are being committed?
+** make sure to group the ones that are the same
+- Who is being arrested?
+- Who is doing the arresting?
+- How many are drug crimes?
+ ** filter for possesion? or filter out the rest? 
+- What kind of drugs? Is it fentanyl like Abbott says? Are most of the people getting arrested for human smuggling black? What does the data show and why might that be?
+- Are a lot of people getting arrested in a specific backyard or area?
+- Are most of the people arrested U.S. citizens? **
+
+## Loading up libraries 
+
+```{r}
+#| label: setup
+#| message: false
+
+
+library(tidyverse)
+library(janitor)
+library(dplyr)
+```
+
+
+## Importing clean combined data, VERSA and SPURS 
+
+```{r}
+ols_data <- read_rds("data-processed/02-combine.rds")
+
+ols_data
+```
+
+## What do these numbers show us about what kinds of crimes are being committed?
+
+Let's look at the amount of different charges under the charge category: 
+
+```{r}
+ols_data$charge |> unique()
+```
+
+I want to group some of these to simplify the process: specific to broader 
+
+```{r}
+cat_ols <- ols_data |> 
+  mutate(charge_cat = case_when(
+    str_detect(charge, "Trespass") ~ "Trespassing"), default. = NA
+  )
+  
+ cat_ols |> 
+   count(charge_cat, charge)
+```
+
+new column case_win charge cateogries: 
+mutate() trespassing 
+
+add the group_by the charge_category 
+
+```{r}
+ols_data |>  
+  group_by(charge) |> 
+  summarise(appearances = n()) |> 
+  arrange(desc(appearances))
+```
+ group by type of charge and regular charge 
+bind_row...
+
+- smuggling of persons 
