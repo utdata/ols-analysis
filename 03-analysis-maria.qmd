@@ -7,8 +7,8 @@ Goals of this notebook:
 - What do these numbers show us about what kinds of crimes are being committed? How many are drug crimes?
 - Who is being arrested?
 - Who is doing the arresting?
-- What kind of drugs? Is it fentanyl like Abbott says? Are most of the people getting arrested for human smuggling Black? What does the data show and why might that be? **
-- Are a lot of people getting arrested in a specific backyard or area?
+- What kind of drugs? Is it fentanyl like Abbott says? Are most of the people getting arrested for human smuggling Black? What does the data show and why might that be? 
+- Are a lot of people getting arrested in a specific backyard or area? 
 - Are most of the people arrested U.S. citizens? **
 
 ## Loading up libraries 
@@ -35,7 +35,7 @@ ols_data
 ## What do these numbers show us about what kinds of crimes are being committed? How many are drug crimes?
 
 
-Let's look at the amount of different charges under the charge category: 
+Let's look at the different charges under the charge category: 
 
 ```{r}
 ols_data$charge |> unique()
@@ -68,12 +68,19 @@ cat_ols <- ols_data |>
    count(charge_cat, charge)
 ```
 
-NOTE: 
+CATEGORY KEY (11): 
 
-- Drug category includes manufacturing and possession of drugs as well as stash house and drug related charges   
-- Weapons category can include drug/weapon offenses that are unclear
-- Warrant/Conspiracy is for more general charges 
-- Weapons can include charges for smuggling persons and firearms 
+- Drug = Any charge that relates to possession or manufacturing of drug, as well as any drug-related charges like stash house charges. 
+- Weapon = Any charge relating to possession/use of unauthorized firearms or weapons. One problem is that there are some unclear  "drug/weapon" offenses.This category can also include harges for smuggling persons and firearms. 
+- Warrant/Conspiracy = general charges. 
+- Smuggling/Trafficking of Persons = Human trafficking or smuggling charges. 
+- Trespassing = Includes all types of trespassing charges. 
+- Immigration Other = Immigration status charges. 
+- Evasion/Fleeing = Escaping authority charges. 
+- Organized Crime
+- Tampering = Charges related to tampering with evidence. 
+- Unauthorized Use of Vehicle
+- Money Laundering 
 
 
 Let's count per category to determine how many of these are drug crimes: 
@@ -86,11 +93,17 @@ cat_ols |>
   arrange(desc(appearances))
 ```
  
- Data Takeaway: At least 22,847 charges under Operation Lone Star are drug-related. 
+
+ Data Takeaway:
+ 
+ - At least 22,847 charges under Operation Lone Star are drug-related (give or take a little more because of drug/weapon charges). 
+ - Notable categories include money laundering, tampering with evidence and unauthorized use of vehicle having more charges than immigration related charges. 
+ 
  
 ## What kind of drugs? Is it fentanyl like Abbott says? 
 
-Let's look at the drug charge category and break it down by type of drug. We used drug statute codes from Texas (https://statutes.capitol.texas.gov/Docs/HS/htm/HS.481.htm) and the Drug Enforcement Agency (https://www.dea.gov/drug-information/drug-scheduling.) 
+Let's look at the drug charge category and break it down by type of drug. We used drug statute codes from state government (https://statutes.capitol.texas.gov/Docs/HS/htm/HS.481.htm) and the Drug Enforcement Agency (https://www.dea.gov/drug-information/drug-scheduling.) 
+
 
 ```{r}
 drug_ols <- cat_ols |>
@@ -105,30 +118,56 @@ drug_ols <- cat_ols |>
       str_detect(charge, "1a|1-A|LSD")  ~ "LSD",
       str_detect(charge, "Heroin|HEROIN") ~ "Heroin"),
    
-     default. = NA
-  )  
+     default. = NA, 
+    
+    fentanyl = case_when(
+      str_detect(charge, "Fent|FENT|1-B|Schedule Ii/") ~ "YES"),
+    
+    default. = NA, 
+    
+    marijuana = case_when(
+      str_detect(charge, "Mari|MARI|Marj|MARJ|Drug Test|Schedule I/") ~ "YES"),
+    
+    default. = NA
+    )
+    
+    
+    
   
     drug_ols |>
-    count(drug_type)
+    count(drug_type, fentanyl, marijuana)
 
   
   
 
 ```
 
-
+Originally, I tried categorizing the charges by type of drug, but this doesn't work out well because of the different codes used. So I decided to focus on any charges that could be related to fentanyl (as some are unclear) to answer our question. I also focused on marijuana charges, one of the more recurring drug offenses.  
  
- Key: 
+NOTES: 
+ 
  - Poss Cs Pg = Possession of Controlled Substance in Penalty Group 
  - Fentanyl is group 1-B (any type of fentanyl)
  - Drug schedules can refer to drugs like other drugs (for example, fentanyl can be found in schedule II drugs)
  - 1-A LSD as well as any of its salts, isomers, and salts of isomers.
- 
- ** count by drug_type 
- 
- 
+ - Under Sec. 481.133.  OFFENSE:  FALSIFICATION OF DRUG TEST RESULTS, can refer to failing an authorized marijuana drug test, so I noted that as "YES" under marijuana column. 
+
+Let's count the amount of charges that can fall under fentanyl and marijuana: 
+
+```{r}
+drug_ols |>
+  group_by(fentanyl, marijuana) |>
+  summarise(appearnaces = n()) |>
+  arrange(desc(appearnaces)) |>
+  filter( fentanyl == "YES" | marijuana == "YES") 
+```
 
 
+ Data Takeaway: At least 1,571 charges in both OLS datasets are related to possession/manufacturing of fentanyl. This is lower than the amount of charges related to marijuana, which are at least 9,491. Overall, fentanyl charges identified in this analysis account for little over 6% of all drug charges, while marijuana charges account for 41% of the drug charges (from the total 22,847 drug charges identified). 
+ 
+ 
+ 
+ 
 
 ## Are most of the people getting arrested for human smuggling Black? What does the data show and why might that be?
 
@@ -150,14 +189,16 @@ Key:
 - H = Hispanic (if race not given, only ethnicity)
 - W = White 
 - A = American Indian or Alaska Native 
-- U = Unknown 
+- U & NA = Unknown 
 
 Data Takeaways: 
 
 - Most people arrested for smuggling/trafficking aren't Black. Although, 1,133 of those charged with smuggling/trafficking people under Opertion Lone Star are Black. 
-- Of those charged, the most common ethnicity (without taking into consideration race) is Hispanic, with 8,081 charges. 
+- Of those charged, the most common ethnicity (without taking into consideration race) is Hispanic, with 8,081 charges. SPURS dataset does not differentiate between ethnicity and race which might affect the results of the data. 
 
 
+NEXT STEPS?: 
+- Look at B charges and then look at their location... does this line up with Houston? 
 
 
  
