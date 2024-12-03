@@ -4,12 +4,9 @@ title: "Analysis"
 
 Goals of this notebook: 
 
-- What do these numbers show us about what kinds of crimes are being committed?
-** make sure to group the ones that are the same
+- What do these numbers show us about what kinds of crimes are being committed? How many are drug crimes?
 - Who is being arrested?
 - Who is doing the arresting?
-- How many are drug crimes?
- ** filter for possesion? or filter out the rest? 
 - What kind of drugs? Is it fentanyl like Abbott says? Are most of the people getting arrested for human smuggling black? What does the data show and why might that be?
 - Are a lot of people getting arrested in a specific backyard or area?
 - Are most of the people arrested U.S. citizens? **
@@ -35,7 +32,8 @@ ols_data <- read_rds("data-processed/02-combine.rds")
 ols_data
 ```
 
-## What do these numbers show us about what kinds of crimes are being committed?
+## What do these numbers show us about what kinds of crimes are being committed? How many are drug crimes?
+
 
 Let's look at the amount of different charges under the charge category: 
 
@@ -43,9 +41,8 @@ Let's look at the amount of different charges under the charge category:
 ols_data$charge |> unique()
 ```
 
-I want to group some of these to simplify the process into different categories: Trespassing, Possession, Firearms,  
+I want to create different categories for all the charges in the dataset.    
 
-NOTE: specific to broader 
 
 ```{r}
 cat_ols <- ols_data |> 
@@ -78,18 +75,14 @@ NOTE:
 - Warrant/Conspiracy is for more general charges 
 - Weapons can include charges for smuggling persons and firearms 
 
-new column case_win charge cateogries: 
-mutate() trespassing 
 
-add the group_by the charge_category 
+Let's count per category to determine how many of these are drug crimes: 
+
 
 ```{r}
-ols_data |>  
-  group_by(charge) |> 
+cat_ols |>  
+  group_by(charge_cat) |> 
   summarise(appearances = n()) |> 
   arrange(desc(appearances))
 ```
- group by type of charge and regular charge 
-bind_row...
-
-- smuggling of persons 
+ 
