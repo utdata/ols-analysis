@@ -43,17 +43,40 @@ Let's look at the amount of different charges under the charge category:
 ols_data$charge |> unique()
 ```
 
-I want to group some of these to simplify the process: specific to broader 
+I want to group some of these to simplify the process into different categories: Trespassing, Possession, Firearms,  
+
+NOTE: specific to broader 
 
 ```{r}
 cat_ols <- ols_data |> 
   mutate(charge_cat = case_when(
-    str_detect(charge, "Trespass") ~ "Trespassing"), default. = NA
+    str_detect(charge, "Firearm|FIREARM|gun|GUN|Amm|Arm|Weapon|WEAPON") ~ "Weapon",
+    str_detect(charge, "Poss|Drug|Mari|POSS|DRUG|MARI|Marj|MARJ|Man|Subs|Stash") ~ "Drug",
+    str_detect(charge, "Smugg|SMUGG|Trafficking|TRAFFICKING|Trans|Bringing In") ~ "Smuggling/Trafficking of Persons",
+    str_detect(charge, "Launder|LAUNDER") ~ "Money Laundering",
+    str_detect(charge, "Trespass|TRESPASS") ~ "Trespassing",
+    str_detect(charge, "Alien|ALIEN|Visa|VISA|IMMIGRATION|Immigration") ~ "Immigration Other",
+    str_detect(charge, "Evad|EVAD|Flee|FLEE") ~ "Evasion/Fleeing",
+    str_detect(charge, "Organized|Enterprise") ~ "Organized Crime",
+    str_detect(charge, "Tamp|TAMP") ~ "Tampering",
+    str_detect(charge, "Unauth") ~ "Unauthorized Use of Vehicle",
+    str_detect(charge, "Warrant|WARRANT|Conspiracy|CONSPIRACY") ~ "Warrant/Conspiracy"),
+
+    
+    
+    default. = NA
   )
   
  cat_ols |> 
    count(charge_cat, charge)
 ```
+
+NOTE: 
+
+- Drug category includes manufacturing and possession of drugs as well as stash house and drug related charges   
+- Weapons category can include drug/weapon offenses that are unclear
+- Warrant/Conspiracy is for more general charges 
+- Weapons can include charges for smuggling persons and firearms 
 
 new column case_win charge cateogries: 
 mutate() trespassing 
