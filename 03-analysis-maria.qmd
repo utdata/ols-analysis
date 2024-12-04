@@ -47,9 +47,9 @@ I want to create different categories for all the charges in the dataset.
 ```{r}
 cat_ols <- ols_data |> 
   mutate(charge_cat = case_when(
-    str_detect(charge, "Firearm|FIREARM|gun|GUN|Amm|Arm|Weapon|WEAPON") ~ "Weapon",
-    str_detect(charge, "Poss|Drug|Mari|POSS|DRUG|MARI|Marj|MARJ|Man|Subs|Stash") ~ "Drug",
+    str_detect(charge, "Drug|CS|Cs|Mari|DRUG|MARI|Marj|MARJ|Man|Subs|Stash|Chem") ~ "Drug",
     str_detect(charge, "Smugg|SMUGG|Trafficking|TRAFFICKING|Trans|Bringing In") ~ "Smuggling/Trafficking of Persons",
+    str_detect(charge, "Firearm|FIREARM|gun|GUN|Amm|Arm|Weapon|WEAPON") ~ "Weapon",
     str_detect(charge, "Launder|LAUNDER") ~ "Money Laundering",
     str_detect(charge, "Trespass|TRESPASS") ~ "Trespassing",
     str_detect(charge, "Alien|ALIEN|Visa|VISA|IMMIGRATION|Immigration") ~ "Immigration Other",
@@ -70,10 +70,10 @@ cat_ols <- ols_data |>
 
 CATEGORY KEY (11): 
 
-- Drug = Any charge that relates to possession or manufacturing of drug, as well as any drug-related charges like stash house charges. 
-- Weapon = Any charge relating to possession/use of unauthorized firearms or weapons. One problem is that there are some unclear  "drug/weapon" offenses.This category can also include harges for smuggling persons and firearms. 
+- Drug = Any charge that relates to possession or manufacturing of drug, as well as any drug-related charges like stash house charges.    One problem is that there are some unclear  "drug/weapon" offenses.
+- Weapon = Any charge relating to possession/use of unauthorized firearms or weapons. 
 - Warrant/Conspiracy = general charges. 
-- Smuggling/Trafficking of Persons = Human trafficking or smuggling charges. 
+- Smuggling/Trafficking of Persons = Human trafficking or smuggling charges. This category can also include charges for smuggling persons and firearms. 
 - Trespassing = Includes all types of trespassing charges. 
 - Immigration Other = Immigration status charges. 
 - Evasion/Fleeing = Escaping authority charges. 
@@ -96,8 +96,8 @@ cat_ols |>
 
  Data Takeaway:
  
- - At least 22,847 charges under Operation Lone Star are drug-related (give or take a little more because of drug/weapon charges). 
- - Notable categories include money laundering, tampering with evidence and unauthorized use of vehicle having more charges than immigration related charges. 
+ - At least 23,233 charges under Operation Lone Star are drug-related. 
+ - Categories include money laundering, tampering with evidence and unauthorized use of vehicle have more charges than immigration related charges. 
  
  
 ## What kind of drugs? Is it fentanyl like Abbott says? 
@@ -128,21 +128,29 @@ drug_ols <- cat_ols |>
     marijuana = case_when(
       str_detect(charge, "Mari|MARI|Marj|MARJ|Drug Test|Schedule I/") ~ "YES"),
     
+    default. = NA, 
+    
+    drug_weapon = case_when(
+      str_detect(charge, "DRUG/WEAPON") ~ "YES"),
+    
     default. = NA
-    )
+  )
+    
+    
+    
     
     
     
   
     drug_ols |>
-    count(drug_type, fentanyl, marijuana)
+    count(drug_type, fentanyl, marijuana, drug_weapon)
 
   
   
 
 ```
 
-Originally, I tried categorizing the charges by type of drug, but this doesn't work out well because of the different codes used. So I decided to focus on any charges that could be related to fentanyl (as some are unclear) to answer our question. I also focused on marijuana charges, one of the more recurring drug offenses.  
+Originally, I tried categorizing the charges by type of drug, but this doesn't work out well because of the different codes used. So I decided to focus on any charges that could be related to fentanyl (as some are unclear) to answer our question. I also focused on marijuana charges, one of the more recurring drug offenses. Then I made a column called drug_weapon for all charges under the drug category that could also be weapons charges. 
  
 NOTES: 
  
@@ -163,7 +171,10 @@ drug_ols |>
 ```
 
 
- Data Takeaway: At least 1,571 charges in both OLS datasets are related to possession/manufacturing of fentanyl. This is lower than the amount of charges related to marijuana, which are at least 9,491. Overall, fentanyl charges identified in this analysis account for little over 6% of all drug charges, while marijuana charges account for 41% of the drug charges (from the total 22,847 drug charges identified). 
+ Data Takeaway: 
+ 
+ - At least 1,571 charges in both OLS datasets are related to possession/manufacturing of fentanyl. This is lower than the amount of charges related to marijuana, which are at least 9,491. 
+ - Overall, fentanyl charges identified in this analysis account for little over 6% of all drug charges, while marijuana charges account for little over 40% of the drug charges (from the total 23,233 drug charges identified). 
  
  
  
@@ -193,8 +204,8 @@ Key:
 
 Data Takeaways: 
 
-- Most people arrested for smuggling/trafficking aren't Black. Although, 1,133 of those charged with smuggling/trafficking people under Opertion Lone Star are Black. 
-- Of those charged, the most common ethnicity (without taking into consideration race) is Hispanic, with 8,081 charges. SPURS dataset does not differentiate between ethnicity and race which might affect the results of the data. 
+- Most people arrested for smuggling/trafficking aren't Black. Although, 1,184 of those charged with smuggling/trafficking people under Opertion Lone Star are Black. 
+- Of those charged, the most common ethnicity (without taking into consideration race) is Hispanic, with 8,178 charges. SPURS dataset does not differentiate between ethnicity and race which might affect the results of the data. 
 
 
 NEXT STEPS?: 
