@@ -57,7 +57,8 @@ cat_ols <- ols_data |>
     str_detect(charge, "Organized|Enterprise") ~ "Organized Crime",
     str_detect(charge, "Tamp|TAMP") ~ "Tampering",
     str_detect(charge, "Unauth") ~ "Unauthorized Use of Vehicle",
-    str_detect(charge, "Warrant|WARRANT|Conspiracy|CONSPIRACY") ~ "Warrant/Conspiracy"),
+    str_detect(charge, "Warrant|WARRANT") ~ "Warrant",
+    str_detect(charge, "Conspiracy|CONSPIRACY") ~ "Conspiracy"),
 
     
     
@@ -66,6 +67,11 @@ cat_ols <- ols_data |>
   
  cat_ols |> 
    count(charge_cat, charge)
+ 
+
+ 
+
+ 
 ```
 
 CATEGORY KEY (11): 
@@ -93,6 +99,8 @@ cat_ols |>
   arrange(desc(appearances))
 ```
  
+ Note: 
+ - solo drug charges that aren't fentanyl 
 
  Data Takeaway:
  
@@ -176,8 +184,70 @@ drug_ols |>
  - At least 1,571 charges in both OLS datasets are related to possession/manufacturing of fentanyl. This is lower than the amount of charges related to marijuana, which are at least 9,491. 
  - Overall, fentanyl charges identified in this analysis account for little over 6% of all drug charges, while marijuana charges account for little over 40% of the drug charges (from the total 23,233 drug charges identified). 
  
+Now let's look at the individuals being charged for drug charges: 
+
+```{r}
+cat_ols |>
+  count(charge_count)
+```
+
+
+Data Takeaways: Most charges are solo charges. 
+
+Now let's look at the solo charges and what drugs they are related too. 
  
+```{r}
+solo_drug_ols <- cat_ols |>
+  group_by(charge, charge_count) |>
+  filter(charge_cat == "Drug") |>
+mutate(
+fentanyl = case_when(
+      str_detect(charge, "Fent|FENT|1-B|Schedule Ii/") ~ "YES"),
+    
+    default. = NA, 
+    
+    marijuana = case_when(
+      str_detect(charge, "Mari|MARI|Marj|MARJ|Drug Test|Schedule I/") ~ "YES"),
+
+) |>
+  filter(charge_count == "1")
+
+solo_drug_ols |>
+count(charge, charge_count, fentanyl, marijuana)
+
+```
  
+```{r}
+solo_drug_ols |>
+  group_by(fentanyl, marijuana) |>
+  summarise(appearnaces = n()) |>
+  arrange(desc(appearnaces)) |>
+  filter( fentanyl == "YES" | marijuana == "YES") 
+
+```
+ 
+ Data Takeaways: 
+ 
+ - Almost all fentanyl and marijuana charges are solo charges. 
+
+ 
+Where are solo drug charges located? 
+ 
+```{r}
+solo_drug_ols |>
+  group_by(arrest_county) |>
+  summarise(appearances = n()) |>
+  arrange(desc(appearances))
+```
+ 
+ Let's look at Ector. 
+ 
+```{r}
+solo_drug_ols |>
+  mutate(
+    str_detect()
+  )
+```
  
 
 ## Are most of the people getting arrested for human smuggling Black? What does the data show and why might that be?
@@ -204,7 +274,7 @@ Key:
 
 Data Takeaways: 
 
-- Most people arrested for smuggling/trafficking aren't Black. Although, 1,184 of those charged with smuggling/trafficking people under Opertion Lone Star are Black. 
+- Most people arrested for smuggling/trafficking aren't Black. Although, 1,184 of those charged with smuggling/trafficking people under Opertion Lone Star are Black making up little over 10% of charges (from smuggling category total). 
 - Of those charged, the most common ethnicity (without taking into consideration race) is Hispanic, with 8,178 charges. SPURS dataset does not differentiate between ethnicity and race which might affect the results of the data. 
 
 
