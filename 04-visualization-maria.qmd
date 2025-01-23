@@ -1,0 +1,19 @@
+---
+title: "04-visualization-maria"
+---
+
+## Operation Lonestar Charge Categories 
+
+
+```{r}
+ggplot(
+  cat_ols, 
+  aes(x = charge_cat, y = charge
+      ) + 
+  geom_col()
+```
+
+
+
+
+

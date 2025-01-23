@@ -45,33 +45,36 @@ I want to create different categories for all the charges in the dataset.
 
 
 ```{r}
-cat_ols <- ols_data |> 
-  mutate(charge_cat = case_when(
-    str_detect(charge, "Drug|CS|Cs|Mari|DRUG|MARI|Marj|MARJ|Man|Subs|Stash|Chem") ~ "Drug",
-    str_detect(charge, "Smugg|SMUGG|Trafficking|TRAFFICKING|Trans|Bringing In") ~ "Smuggling/Trafficking of Persons",
-    str_detect(charge, "Firearm|FIREARM|gun|GUN|Amm|Arm|Weapon|WEAPON") ~ "Weapon",
-    str_detect(charge, "Launder|LAUNDER") ~ "Money Laundering",
-    str_detect(charge, "Trespass|TRESPASS") ~ "Trespassing",
-    str_detect(charge, "Alien|ALIEN|Visa|VISA|IMMIGRATION|Immigration") ~ "Immigration Other",
-    str_detect(charge, "Evad|EVAD|Flee|FLEE") ~ "Evasion/Fleeing",
-    str_detect(charge, "Organized|Enterprise") ~ "Organized Crime",
-    str_detect(charge, "Tamp|TAMP") ~ "Tampering",
-    str_detect(charge, "Unauth") ~ "Unauthorized Use of Vehicle",
-    str_detect(charge, "Warrant|WARRANT") ~ "Warrant",
-    str_detect(charge, "Conspiracy|CONSPIRACY") ~ "Conspiracy"),
-
-    
+cat_ols <- ols_data |>
+  mutate(
+    charge_cat = case_when(
+      str_detect(
+        charge,
+        "Drug|CS|Cs|Mari|DRUG|MARI|Marj|MARJ|Man|Subs|Stash|Chem"
+      ) ~ "Drug",
+      str_detect(
+        charge,
+        "Smugg|SMUGG|Trafficking|TRAFFICKING|Trans|Bringing In"
+      ) ~ "Smuggling/Trafficking of Persons",
+      str_detect(charge, "Firearm|FIREARM|gun|GUN|Amm|Arm|Weapon|WEAPON") ~ "Weapon",
+      str_detect(charge, "Launder|LAUNDER") ~ "Money Laundering",
+      str_detect(charge, "Trespass|TRESPASS") ~ "Trespassing",
+      str_detect(charge, "Alien|ALIEN|Visa|VISA|IMMIGRATION|Immigration") ~ "Immigration Other",
+      str_detect(charge, "Evad|EVAD|Flee|FLEE") ~ "Evasion/Fleeing",
+      str_detect(charge, "Organized|Enterprise") ~ "Organized Crime",
+      str_detect(charge, "Tamp|TAMP") ~ "Tampering",
+      str_detect(charge, "Unauth") ~ "Unauthorized Use of Vehicle",
+      str_detect(charge, "Warrant|WARRANT") ~ "Warrant",
+      str_detect(charge, "Conspiracy|CONSPIRACY") ~ "Conspiracy"
+    ),
     
     default. = NA
   )
+
+cat_ols |>
+  count(charge, charge_cat) 
   
- cat_ols |> 
-   count(charge_cat, charge)
- 
 
- 
-
- 
 ```
 
 CATEGORY KEY (11): 
@@ -184,11 +187,14 @@ drug_ols |>
  - At least 1,571 charges in both OLS datasets are related to possession/manufacturing of fentanyl. This is lower than the amount of charges related to marijuana, which are at least 9,491. 
  - Overall, fentanyl charges identified in this analysis account for little over 6% of all drug charges, while marijuana charges account for little over 40% of the drug charges (from the total 23,233 drug charges identified). 
  
+##Solo drug charges 
+ 
 Now let's look at the individuals being charged for drug charges: 
 
 ```{r}
 cat_ols |>
-  count(charge_count)
+  filter(charge_cat == "Drug") |>
+  count(charge_count) 
 ```
 
 
@@ -204,10 +210,13 @@ mutate(
 fentanyl = case_when(
       str_detect(charge, "Fent|FENT|1-B|Schedule Ii/") ~ "YES"),
     
-    default. = NA, 
-    
+
     marijuana = case_when(
       str_detect(charge, "Mari|MARI|Marj|MARJ|Drug Test|Schedule I/") ~ "YES"),
+
+   
+  
+    default. = NA, 
 
 ) |>
   filter(charge_count == "1")
@@ -217,18 +226,25 @@ count(charge, charge_count, fentanyl, marijuana)
 
 ```
  
+ 
+ 
 ```{r}
-solo_drug_ols |>
-  group_by(fentanyl, marijuana) |>
-  summarise(appearnaces = n()) |>
-  arrange(desc(appearnaces)) |>
-  filter( fentanyl == "YES" | marijuana == "YES") 
+solo_drug_type <- 
+  solo_drug_ols |>
+  ungroup() |>
+  mutate(drug_charge = case_when(
+    str_detect(fentanyl, "YES") ~ "fentanyl",
+    str_detect(marijuana, "YES") ~ "marijuana",
+    .default = "other"
+  )
+)
+
+solo_drug_type |>
+  count(drug_charge)
 
 ```
  
- Data Takeaways: 
- 
- - Almost all fentanyl and marijuana charges are solo charges. 
+   
 
  
 Where are solo drug charges located? 
@@ -240,13 +256,22 @@ solo_drug_ols |>
   arrange(desc(appearances))
 ```
  
- Let's look at Ector. 
+ Let's look at Ector, the 6th county with the most solo drug charges. Ector county is not near the border. 
  
 ```{r}
 solo_drug_ols |>
   mutate(
-    str_detect()
-  )
+    fentanyl = case_when(
+      str_detect(charge, "Fent|FENT|1-B|Schedule Ii/") ~ "YES"),
+    
+    default. = NA, 
+    
+    marijuana = case_when(
+      str_detect(charge, "Mari|MARI|Marj|MARJ|Drug Test|Schedule I/") ~ "YES"),
+
+
+  ) |> 
+
 ```
  
 
