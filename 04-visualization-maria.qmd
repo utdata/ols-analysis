@@ -2,18 +2,11 @@
 title: "04-visualization-maria"
 ---
 
-## Operation Lonestar Charge Categories 
+## Charge Categories 
 
 
-```{r}
-ggplot(
-  cat_ols, 
-  aes(x = charge_cat, y = charge
-      ) + 
-  geom_col()
-```
+## Drug Types 
 
+![](figures/drug_ols_chart.png) 
 
-
-
-
+## Solo Drug Types 

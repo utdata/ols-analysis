@@ -9,7 +9,6 @@ Goals of this notebook:
 - Who is doing the arresting?
 - What kind of drugs? Is it fentanyl like Abbott says? Are most of the people getting arrested for human smuggling Black? What does the data show and why might that be? 
 - Are a lot of people getting arrested in a specific backyard or area? 
-- Are most of the people arrested U.S. citizens? **
 
 ## Loading up libraries 
 
@@ -21,6 +20,7 @@ Goals of this notebook:
 library(tidyverse)
 library(janitor)
 library(dplyr)
+library(ggplot2)
 ```
 
 
@@ -65,10 +65,12 @@ cat_ols <- ols_data |>
       str_detect(charge, "Tamp|TAMP") ~ "Tampering",
       str_detect(charge, "Unauth") ~ "Unauthorized Use of Vehicle",
       str_detect(charge, "Warrant|WARRANT") ~ "Warrant",
-      str_detect(charge, "Conspiracy|CONSPIRACY") ~ "Conspiracy"
-    ),
+      str_detect(charge, "Conspiracy|CONSPIRACY") ~ "Conspiracy",
+ 
+        .default = "Other"
+       )
     
-    default. = NA
+    
   )
 
 cat_ols |>
@@ -77,14 +79,15 @@ cat_ols |>
 
 ```
 
-CATEGORY KEY (11): 
+Within Operation Lone Star, there are 490 different types of charges. Therefore, we decided to break down the charges into 11 different categories. Here's a key that describes each category. 
 
-- Drug = Any charge that relates to possession or manufacturing of drug, as well as any drug-related charges like stash house charges.    One problem is that there are some unclear  "drug/weapon" offenses.
+Operation Lone Star Charge Category Key: 
+- Drug = Any charge that relates to possession or manufacturing of drug, as well as any drug-related charges like stash house charges. Something to note is that some charges are both  "drug/weapon" offenses.
 - Weapon = Any charge relating to possession/use of unauthorized firearms or weapons. 
-- Warrant/Conspiracy = general charges. 
-- Smuggling/Trafficking of Persons = Human trafficking or smuggling charges. This category can also include charges for smuggling persons and firearms. 
+- Warrant/Conspiracy = General charges. 
+- Smuggling/Trafficking of Persons = Human trafficking or smuggling charges. This category also includes charges for smuggling both persons and firearms. 
 - Trespassing = Includes all types of trespassing charges. 
-- Immigration Other = Immigration status charges. 
+- Immigration Other = Immigration related charges. 
 - Evasion/Fleeing = Escaping authority charges. 
 - Organized Crime
 - Tampering = Charges related to tampering with evidence. 
@@ -96,10 +99,13 @@ Let's count per category to determine how many of these are drug crimes:
 
 
 ```{r}
-cat_ols |>  
+ cat_chart <- cat_ols |>  
   group_by(charge_cat) |> 
-  summarise(appearances = n()) |> 
-  arrange(desc(appearances))
+  summarise(charge_num =  n()) |> 
+  arrange(desc(charge_num))## |> 
+ # mutate(charge_num = appearances) 
+
+cat_chart
 ```
  
  Note: 
@@ -109,6 +115,27 @@ cat_ols |>
  
  - At least 23,233 charges under Operation Lone Star are drug-related. 
  - Categories include money laundering, tampering with evidence and unauthorized use of vehicle have more charges than immigration related charges. 
+ 
+ 
+```{r}
+#charge_cat_chart <- cat_ols |> 
+ggplot(cat_chart,
+       aes(x = charge_num, y =  reorder(charge_cat, charge_num))
+) +
+  geom_col() + 
+  geom_text(aes(label = charge_num),  color = "black", position = position_dodge(width = 1)  ) +
+  labs(
+    title = "What is Operation Lone Star Actually Doing?",
+    x = "Number of Charges", 
+    y = "Charge Category", 
+    subtitle = str_wrap("This chart looks at the different types of charges  under Operation Lone Star. Notably, the most popular type of charge is drug-related."), 
+  caption = "Source = Operation Lone Star Data"
+  )
+
+
+```
+ 
+
  
  
 ## What kind of drugs? Is it fentanyl like Abbott says? 
@@ -174,13 +201,40 @@ NOTES:
 Let's count the amount of charges that can fall under fentanyl and marijuana: 
 
 ```{r}
-drug_ols |>
-  group_by(fentanyl, marijuana) |>
-  summarise(appearnaces = n()) |>
-  arrange(desc(appearnaces)) |>
-  filter( fentanyl == "YES" | marijuana == "YES") 
+drug_ols_analysis <- drug_ols |>
+  ungroup() |>
+  mutate(drug_charge = case_when(
+    str_detect(fentanyl, "YES") ~ "fentanyl",
+    str_detect(marijuana, "YES") ~ "marijuana",
+    .default = "other"
+  ))
+
+drug_ols_analysis |>
+  count(drug_charge)
+
 ```
 
+Visualization: 
+
+```{r}
+##drug_ols_chart <- drug_ols_analysis |>
+ggplot(drug_ols_analysis,
+  aes(y =  drug_charge)
+) +
+  geom_bar() + 
+  labs(
+    title = "What types of drugs does Operation Lone Star target?",
+    x = "Number of Charges", 
+    y = "Type of Drug Charge", 
+    subtitle = str_wrap("This analysis looked at fentanyl and marijuana related drug charges. Most drug charges were not related to either fentanyl or marijuana. However, drug charges are recorded differently in the data, so further anaylsis is needed to determine if this reflects the total number for each type of drug."), 
+  caption = "Source = Operation Lone Star Data"
+  )
+
+ ##ggsave("figures/drug_ols_chart.png")
+
+```
+
+![](figures/drug_ols_chart.png)
 
  Data Takeaway: 
  
@@ -232,7 +286,7 @@ count(charge, charge_count, fentanyl, marijuana)
 solo_drug_type <- 
   solo_drug_ols |>
   ungroup() |>
-  mutate(drug_charge = case_when(
+  mutate(drug_charge_s = case_when(
     str_detect(fentanyl, "YES") ~ "fentanyl",
     str_detect(marijuana, "YES") ~ "marijuana",
     .default = "other"
@@ -240,11 +294,26 @@ solo_drug_type <-
 )
 
 solo_drug_type |>
-  count(drug_charge)
+  count(drug_charge_s)
 
 ```
  
-   
+Visualization: 
+
+```{r}
+ggplot(solo_drug_type,
+       aes(y =  drug_charge_s)
+) +
+  geom_bar() + 
+  labs(
+    title = "What do solo drug charges look like under Operation Lone Star?",
+    x = "Number of Charges", 
+    y = "Type of Drug Charge", 
+    subtitle = str_wrap("This analysis looked at fentanyl and marijuana related drug charges. Most drug charges were not related to either fentanyl or marijuana. However, drug charges for the same type of drug are recorded differently in the data, so further anaylsis is needed to determine if this reflects the total number for each type of drug."), 
+  caption = "Source = Operation Lone Star Data"
+  )
+```
+
 
  
 Where are solo drug charges located? 
@@ -256,7 +325,15 @@ solo_drug_ols |>
   arrange(desc(appearances))
 ```
  
- Let's look at Ector, the 6th county with the most solo drug charges. Ector county is not near the border. 
+ write it in csv: 
+ 
+```{r}
+write_csv(solo_drug_ols, "/Users/MariaProbert/rwd/solo_drug_ols.csv")
+```
+ 
+
+
+Let's look at Ector, the 6th county with the most solo drug charges. Ector county is not near the border. 
  
 ```{r}
 solo_drug_ols |>
@@ -306,5 +383,30 @@ Data Takeaways:
 NEXT STEPS?: 
 - Look at B charges and then look at their location... does this line up with Houston? 
 
+## Officers in all counties 
 
+How to filter a percentage in tabyl? 
  
+```{r}
+officer_count |>
+  tabyl(arresting_officer, arrest_county ) |>
+  adorn_totals("col", name = "col_total") |>
+  adorn_totals("row") |>
+  tibble() |> 
+  arrange(desc(col_total)) |>
+  filter(col_total > 100)
+  
+ 
+
+```
+ 
+```{r}
+#officer_count <- ols_data |> 
+ # group_by(arresting_officer) ##|> 
+
+
+ols_data |> 
+  count( arresting_officer)
+```
+
+ Can we import a tableau file 
