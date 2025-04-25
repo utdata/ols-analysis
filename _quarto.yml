@@ -1,19 +1,28 @@
 project:
   type: website
+  output-dir: docs
+  render:
+  - "01*.qmd"
+  - "*.qmd"
 
 website:
-  title: "VERSA analysis"
-  navbar:
-    left:
+  title: "Operation Lone Star Project"
+  sidebar:
+    contents:
       - href: index.qmd
-        text: Home
-      - 01-cleaning.qmd
+        text: Project Overview
+      - 01-cleaning-versa.qmd
+      - 01-spurs-cleaning.qmd
+      - 02-combine.qmd
+      - 04-analysisgraphics.qmd
 
 format:
   html:
     theme: cosmo
     css: styles.css
     toc: true
+    df-print: paged
+    code-overflow: wrap
 
 
 

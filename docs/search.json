@@ -1,0 +1,574 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Operation Lone Star Project",
+    "section": "",
+    "text": "Maria Probert and Olivia Dilley are two senior journalism students at the University of Texas at Austin. They’re both Data Fellows for the UT Journalism Media Innovation Group, a part of the Dallas Morning News Journalism Innovation Endowment.\nIn September 2024, we started working with Lauren McGaughy, a reporter for The Texas Newsroom, on a project looking into Operation Lone Star arrest data. She wanted us to investigate the data for any outliers or notable findings that might contradict public discourse about the arrests being made.\nIn January 2023, Texas Highway Patrol started using the Versaterm Software Suite (VERSA) to collect arrest data under Operation Lone Star throughout the state of Texas. Prior to that, they used a program called SPURS. This project is dedicated to analyzing and synthesizing data from both programs.\nThe data was obtained from a public records request.",
+    "crumbs": [
+      "Project Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#project-overview",
+    "href": "index.html#project-overview",
+    "title": "Operation Lone Star Project",
+    "section": "",
+    "text": "Maria Probert and Olivia Dilley are two senior journalism students at the University of Texas at Austin. They’re both Data Fellows for the UT Journalism Media Innovation Group, a part of the Dallas Morning News Journalism Innovation Endowment.\nIn September 2024, we started working with Lauren McGaughy, a reporter for The Texas Newsroom, on a project looking into Operation Lone Star arrest data. She wanted us to investigate the data for any outliers or notable findings that might contradict public discourse about the arrests being made.\nIn January 2023, Texas Highway Patrol started using the Versaterm Software Suite (VERSA) to collect arrest data under Operation Lone Star throughout the state of Texas. Prior to that, they used a program called SPURS. This project is dedicated to analyzing and synthesizing data from both programs.\nThe data was obtained from a public records request.",
+    "crumbs": [
+      "Project Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#what-is-operation-lonestar",
+    "href": "index.html#what-is-operation-lonestar",
+    "title": "Operation Lone Star Project",
+    "section": "What is Operation Lonestar?",
+    "text": "What is Operation Lonestar?\nAccording to the Texas Tribune, “Operation Lone Star is a border security initiative launched by Texas Gov. Greg Abbott in March 2021 in response to rising border crossings, which he blames on President Joe Biden’s immigration policies.”\nThis initiative gives the Texas National Guard access to the border, and are tasked with aiding arrests for border-related crimes including drug smuggling and human trafficking. But the success of the initiative is under a lot of scrutiny.\nMore information can be found in this Texas Tribune guide.\n04/2025 UPDATE: Since the Trump administration’s return to office, Texas’ state government is working collaboratively with the federal government in its border security efforts, so the fate of Operation Lone Star is in transition.",
+    "crumbs": [
+      "Project Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#what-are-our-goals",
+    "href": "index.html#what-are-our-goals",
+    "title": "Operation Lone Star Project",
+    "section": "What are our goals?",
+    "text": "What are our goals?\nThis project aims to make sense of Operation Lone Star’s success.\nWe want to answer these questions:\n\nWhat do these numbers show us about what kinds of crimes are being committed?\nWho is being arrested? (Gender, ethnicity, age)\nWho is doing the arresting? (County, Officers (or ID))\nHow many are drug crimes?\nWhat kind of drugs? Is it Fentanyl like Abbott says?",
+    "crumbs": [
+      "Project Overview"
+    ]
+  },
+  {
+    "objectID": "04-analysisgraphics.html",
+    "href": "04-analysisgraphics.html",
+    "title": "Final Analysis",
+    "section": "",
+    "text": "The purpose of this notebook is to combine Maria and Olivia’s analyses into one easily digestible notebook. For a closer look at what each of us did, you can look at our individual cleaning notebooks.\nWe worked together to answer these questions:\n\nWho is being arrested?\nWho is doing the arresting?\nWhat kinds of crimes are being committed?\nHow many are drug crimes?\nWhat kind of drugs? Is it fentanyl like Abbott says?\n\nLet’s get into it.",
+    "crumbs": [
+      "Final Analysis"
+    ]
+  },
+  {
+    "objectID": "04-analysisgraphics.html#goals-of-this-notebook",
+    "href": "04-analysisgraphics.html#goals-of-this-notebook",
+    "title": "Final Analysis",
+    "section": "",
+    "text": "The purpose of this notebook is to combine Maria and Olivia’s analyses into one easily digestible notebook. For a closer look at what each of us did, you can look at our individual cleaning notebooks.\nWe worked together to answer these questions:\n\nWho is being arrested?\nWho is doing the arresting?\nWhat kinds of crimes are being committed?\nHow many are drug crimes?\nWhat kind of drugs? Is it fentanyl like Abbott says?\n\nLet’s get into it.",
+    "crumbs": [
+      "Final Analysis"
+    ]
+  },
+  {
+    "objectID": "04-analysisgraphics.html#setup",
+    "href": "04-analysisgraphics.html#setup",
+    "title": "Final Analysis",
+    "section": "Setup",
+    "text": "Setup\nWe’ll load our libraries.\n\nlibrary(tidyverse)\nlibrary(janitor)",
+    "crumbs": [
+      "Final Analysis"
+    ]
+  },
+  {
+    "objectID": "04-analysisgraphics.html#importing-cleaned-data",
+    "href": "04-analysisgraphics.html#importing-cleaned-data",
+    "title": "Final Analysis",
+    "section": "Importing cleaned data",
+    "text": "Importing cleaned data\nThen we’ll import our cleaned data from our combined data sets.\n\nolsdata &lt;- read_rds(\"data-processed/02-combine.rds\")\n\nolsdata",
+    "crumbs": [
+      "Final Analysis"
+    ]
+  },
+  {
+    "objectID": "04-analysisgraphics.html#categorizing-charges",
+    "href": "04-analysisgraphics.html#categorizing-charges",
+    "title": "Final Analysis",
+    "section": "Categorizing charges",
+    "text": "Categorizing charges\nThe first thing we want to do is create categories for these charges. We won’t use them immediately to answer our demographics questions, but it will come in handy later when we look into each race and the charge breakdowns within them. We’ll also use them later to break down specific charge categories, like smuggling and drug arrests.\nWithin Operation Lone Star, there are 490 different types of charges. Therefore, we decided to break down the charges into 11 different categories. Here’s a key that describes each category.\nOperation Lone Star Charge Category Key:\n\nDrug: Any charge relating to the possession, manufacturing, storage, or sale of drugs. This category also includes “drug/weapon” offenses.\nWeapon: Any charge relating to possession/use of unauthorized firearms or weapons.\nWarrant/Conspiracy: Any charge relating to legal authorization of arrest or conspiracy to commit a crime.\nSmuggling/Trafficking of Persons: Any charge relating to human trafficking or smuggling. This category includes charges for smuggling both persons and firearms.\nTrespassing: Any charge relating to trespassing.\nImmigration Other: Any charge relating to immigration.\nEvasion/Fleeing: Any charge relating to evading or fleeing from authority.\nTampering: Any charge relating to tampering with evidence.\nOrganized Crime: Any charge relating to groups that engage in organized illegal activity (fraud, robbery, cargo theft).\nUnauthorized Use of Vehicle: Any charge relating to operating another person’s vehicle without their consent.\nMoney Laundering: Any charge relating to acquiring or concealing illegally obtained money.\n\n\nCreating categories\n\ncat_ols &lt;- olsdata |&gt;\n  mutate(\n    charge_cat = case_when(\n      str_detect(\n        charge,\n        \"Drug|CS|Cs|Mari|DRUG|MARI|Marj|MARJ|Man|Subs|Stash|Chem\"\n      ) ~ \"Drug\",\n      str_detect(\n        charge,\n        \"Smugg|SMUGG|Trafficking|TRAFFICKING|Trans|Bringing In\"\n      ) ~ \"Smuggling/Trafficking of Persons\",\n      str_detect(charge, \"Firearm|FIREARM|gun|GUN|Amm|Arm|Weapon|WEAPON\") ~ \"Weapon\",\n      str_detect(charge, \"Launder|LAUNDER\") ~ \"Money Laundering\",\n      str_detect(charge, \"Trespass|TRESPASS\") ~ \"Trespassing\",\n      str_detect(charge, \"Alien|ALIEN|Visa|VISA|IMMIGRATION|Immigration\") ~ \"Immigration Other\",\n      str_detect(charge, \"Evad|EVAD|Flee|FLEE\") ~ \"Evasion/Fleeing\",\n      str_detect(charge, \"Organized|Enterprise\") ~ \"Organized Crime\",\n      str_detect(charge, \"Tamp|TAMP\") ~ \"Tampering\",\n      str_detect(charge, \"Unauth\") ~ \"Unauthorized Use of Vehicle\",\n      str_detect(charge, \"Warrant|WARRANT\") ~ \"Warrant\",\n      str_detect(charge, \"Conspiracy|CONSPIRACY\") ~ \"Conspiracy\"\n    ,\n    .default = \"Other\"\n  ))\n\ncat_ols |&gt;\n  count(charge_cat, charge)\n\n\n  \n\n\n\nThen we’ll do a quick group_by, summarize, arrange to see the categories and allow us to visualize it in a second.\n\ncat_chart &lt;- cat_ols |&gt; \n  group_by(charge_cat) |&gt; \n  summarise(charge_num = n()) |&gt; \n  arrange(desc(charge_num))\n\ncat_chart\n\n\n  \n\n\n\nNow that we’ve got that, let’s make a chart to visualize it. We’ll use ggplot, pull cat_chart back up, and create a simple bar chart. We reordered the bars so that the category is on the y axis so the readability is better. Then we adjusted the number labels so you can read them better and gave the bars a color. Now we can see which categories are the most prolific.\n\nggplot(cat_chart, aes(x = charge_num, y = reorder(charge_cat, charge_num))) +     \n  geom_col(fill = \"#0AB7F7\") +\n  geom_text(aes(label = charge_num, hjust = ifelse(charge_num &gt; 1967, 1.1, -.1)),\n  color = \"black\") +\n  labs(\n      title = \"What is Operation Lone Star Actually Doing?\",\n      x = \"Number of Charges\",\n      y = \"\",\n      subtitle = str_wrap(\"This chart looks at the different types of charges  under Operation Lone Star. Notably, the most popular type of charge is drug-related.\", width = 70),\n      caption = \"Source = Operation Lone Star Data\",\n      )\n\n\n\n\n\n\n\n\nFrom this simple chart, we can see a couple preliminary takeaways:\n\nAt least 23,233 charges under Operation Lone Star are drug-related.\nCategories like money laundering, tampering with evidence and unauthorized use of vehicle are more common than immigration related charges.\n\nNow that we have that for later, we’ll get into the demographics data.",
+    "crumbs": [
+      "Final Analysis"
+    ]
+  },
+  {
+    "objectID": "04-analysisgraphics.html#demographics",
+    "href": "04-analysisgraphics.html#demographics",
+    "title": "Final Analysis",
+    "section": "Demographics",
+    "text": "Demographics\nThe first set of questions we want to answer look at demographics - who is being arrested under OLS and who is doing that arresting.\n\nWho is being arrested?\nLet’s look at sex, ethnicity, age, and race.\n\nSex:\nWe call our data, group by the arrested person’s sex, then summarize and arrange that so we can see it in descending order. We’ll put that into a bucket so we can refer to it later in our visual component. We also filtered out the NA and Unknown inputs because they aren’t really helpful in our visualization and the cases were so few that it was insignificant to include.\n\nolsgender &lt;- olsdata |&gt; \n  filter(person_gender_abbr == \"M\" | person_gender_abbr == \"F\") |&gt; \n  group_by(person_gender_abbr) |&gt; \n  summarise(appearances = n()) |&gt; \n  arrange(desc(appearances))\n\nolsgender\n\n\n  \n\n\n\nWe can see that there’s an overwhelming majority of males being arrested under Operation Lone Star.\n\nCreating a graph for sex demographics\n\nggplot(olsgender, aes(x = reorder(person_gender_abbr, appearances), y = appearances, fill = person_gender_abbr)) +\n  geom_col(stat = \"identity\", width = 0.6) +\n  geom_text(aes(label = appearances, hjust = 1.9), color = \"white\") +\n  coord_flip() +\n  labs(\n    title = \"Operation Lone Star arrests by sex\",\n    subtitle = str_wrap(\"Operation Lone Star is a program launched by Texas Governor Greg Abbott to increase safety at the southern border of the state. Arrest data from the program shows that the number of males arrested is much higher than the number of females since the programs' inception in 2021.\"),\n    caption = \"By Olivia Dilley\",\n    x = \"\",\n    y = \"Number of arrests\"\n  ) + \n  scale_fill_manual(values = c(\n    \"M\" = \"#FF6347\",\n    \"F\" = \"#40E0D0\")) +\n    theme(legend.position = \"none\")\n\n\n\n\n\n\n\n\n\n\n\nEthnicity:\nWe’ll do the same procedure except using the ethnicity of the arrested person.\n\nolsethnicity &lt;- olsdata |&gt; \n  filter(ethnicity != \"U\") |&gt; \n  group_by(ethnicity) |&gt; \n  summarise(appearances = n()) |&gt;\n  arrange(desc(appearances))\n\nolsethnicity\n\n\n  \n\n\n\nWe filtered out the small amount of unknown ethnicity cases and the data from the SPURS system, before they tracked ethnicity as a separate category from race, meaning this data is just looking at VERSA arrest data. For these cases, the majority of arrested people were Hispanic.\n\nCreating a graph for ethnicity demographics\n\nggplot(olsethnicity, aes(x = reorder(ethnicity, appearances), y = appearances, fill = ethnicity)) +\n  geom_col(stat = \"identity\", width = 0.6) +\n  geom_text(aes(label = appearances, hjust = 1.9), color = \"white\") +\n  coord_flip() +\n  labs(\n    title = \"Operation Lone Star arrests by ethnicity\",\n    subtitle = str_wrap(\"Arrest data from Operation Lone Star shows that the number of Hispanics arrested is much higher than the number of non-Hispanics since the programs' inception in 2021.\"),\n    caption = \"By Olivia Dilley\",\n    x = \"Ethnicity of arrested individual\",\n    y = \"Number of arrests\"\n  ) + \n  scale_fill_manual(values = c(\n    \"H\" = \"#FF6347\",\n    \"N\" = \"#40E0D0\")) +\n    theme(legend.position = \"none\")\n\n\n\n\n\n\n\n\n\n\n\nAge:\nFirst we’ll call olsdata and group by the person’s age, summarize by appearances, and arrange in descending order to see what age’s have the most arrest instances. Then we’ll put that in a new bucket, olsage, for later reference.\n\nolsage &lt;- olsdata |&gt; \n  group_by(person_age) |&gt; \n  summarise(appearances = n()) |&gt;\n  arrange(desc(appearances)) \n\nolsage\n\n\n  \n\n\n\nNow, if you click through the data, you’ll see some obvious entering errors, like ages that are in the negatives and people that are between 1 and 943 years old. Because of this, we’ve decided to filter ages to between 10 and 100 to only incorporate cases that were most likely entered accurately for age.\n\nolsagerefined &lt;- olsage |&gt; \n  filter(between (person_age, 10, 100))\n\nolsagerefined\n\n\n  \n\n\n\n\nCreating a graph for age demographics\nOnce we have this data, we’ll make a simple scatter plot with it using ggplot and geom_point.\n\nggplot(olsagerefined, aes(x = person_age, y = appearances)) +\n  geom_line() +\n  geom_point() +\n  labs(\n    title = \"Operation Lone Star arrests by age\",\n    subtitle = str_wrap(\"Arrest data from Operation Lone Star shows that younger people are arrested more frequently, with a peak at 22 years old. After that age, arrests begin to drop off significantly.\"),\n    caption = \"By Olivia Dilley\",\n    x = \"Age of arrested individual\",\n    y = \"Number of arrests\"\n  )\n\n\n\n\n\n\n\n\nWhat’s interesting about this graph is that it closely reflects the age-crime curve which shows the rate of criminal activity as it corresponds with age.\nSee Pinkerton’s Age-Crime Curve.\n\n\n\nRace:\nLastly for basic demographics, we’ll look at the race of people arrested in OLS.\n\nolsrace &lt;- olsdata |&gt; \n  filter(person_race_abbr != \"NA\", person_race_abbr != \"U\") |&gt;\n  group_by(person_race_abbr) |&gt; \n  summarise(appearances = n()) |&gt;\n  arrange(desc(appearances))\n\nolsrace\n\n\n  \n\n\n\n\nCreating a graph for race demographics\nNow we’ll make a bar chart to check this out visually.\n\nggplot(olsrace, aes(x = reorder(person_race_abbr, appearances), y = appearances)) +\n  geom_col(stat = \"identity\", fill = \"#f1948a\") +\n  geom_text(aes(label = appearances, hjust = ifelse(appearances &gt; 4186, 1.3, -.1)), color = \"black\") +\n  coord_flip() +\n  labs(\n    title = \"Operation Lone Star arrests by race\",\n    subtitle = str_wrap(\"Arrest data from Operation Lone Star shows that the number of Hispanics arrested is much higher than any other race since the programs' inception in 2021.\"),\n    caption = \"By Olivia Dilley\",\n    x = \"Race of arrested individual\",\n    y = \"Number of arrests\"\n  ) +\n    theme(legend.position = \"none\")\n\n\n\n\n\n\n\n\nWe can see Hispanics are still the most arrested in the OLS database.\nLet’s break these down by each race to see what crimes are being committed the most.\n\n\n\n\nBreaking down offenders’ charges by races\n\nWe’ll start with Black arrestees\n\nblackarrests &lt;- cat_ols |&gt;\n  group_by(person_race_abbr, charge_cat) |&gt; \n  filter(person_race_abbr == \"B\") |&gt;\n  summarise(appearances = n()) |&gt; \n  arrange(desc(appearances))\n\nblackarrests\n\n\n  \n\n\n\nSo Black people are most commonly getting arrested under OLS for drugs, then smuggling. Let’s make this a graph.\n\nggplot(blackarrests, aes(x = reorder(charge_cat, appearances), y = appearances)) +\n  geom_col(fill = \"#0AB7F7\", stat = \"identity\") +\n   geom_text(aes(label = appearances, hjust = ifelse(appearances &gt; 248, 1.1, -.1)),\n  color = \"black\") +\n  coord_flip() +\n  labs(\n    title = \"Charge types for Black arrestees\",\n    subtitle = str_wrap(\"Operation Lonestar arrest data shows Black people are being arrested mostly for drug and smuggling related charges.\", width = 65),\n    caption = \"By Olivia Dilley\",\n    x = \"\",\n    y = \"Number of arrests\"\n  )\n\n\n\n\n\n\n\n\n\n\nNow White arrests\n\nwhitearrests &lt;- cat_ols |&gt;\n  group_by(person_race_abbr, charge_cat) |&gt; \n  filter(person_race_abbr == \"W\") |&gt;\n  summarise(appearances = n()) |&gt; \n  arrange(desc(appearances))\n\nwhitearrests\n\n\n  \n\n\n\nSo white people are also most commonly getting arrested under OLS for drugs. Let’s make this a graph.\n\nggplot(whitearrests, aes(x = reorder(charge_cat, appearances), y = appearances)) +\n  geom_col(fill = \"#0AB7F7\", stat = \"identity\") +\n  geom_text(aes(label = appearances, hjust = ifelse(appearances &gt; 492, 1.1, -.1)),\n  color = \"black\") +\n  coord_flip() +\n  labs(\n    title = \"Charge types for white arrestees\",\n    subtitle = str_wrap(\"Operation Lonestar arrest data shows white people are being arrested mostly for drug and smuggling related charges.\", width = 65),\n    caption = \"By Olivia Dilley\",\n    x = \"\",\n    y = \"Number of arrests\"\n  )\n\n\n\n\n\n\n\n\n\n\nNow Hispanic arrests\n\nhispanicarrests &lt;- cat_ols |&gt;\n  group_by(person_race_abbr, charge_cat) |&gt; \n  filter(person_race_abbr == \"H\") |&gt;\n  summarise(appearances = n()) |&gt; \n  arrange(desc(appearances))\n\nhispanicarrests\n\n\n  \n\n\n\nAgain, Hispanic people are most commonly getting arrested under OLS for drugs. Let’s make this a graph.\n\nggplot(hispanicarrests, aes(x = reorder(charge_cat, appearances), y = appearances)) +\n  geom_col(fill = \"#0AB7F7\", stat = \"identity\") +\n  geom_text(aes(label = appearances, hjust = ifelse(appearances &gt; 1174, 1.1, -.1)),\n  color = \"black\") +\n  coord_flip() +\n  labs(\n    title = \"Charge types for Hispanic arrestees\",\n    subtitle = str_wrap(\"Operation Lonestar arrest data shows Hispanic people are being arrested mostly for drug and smuggling related charges.\", width = 65),\n    caption = \"By Olivia Dilley\",\n    x = \"\",\n    y = \"Number of arrests\"\n  )\n\n\n\n\n\n\n\n\n\n\nNow Asian arrests\n\nasianarrests &lt;- cat_ols |&gt;\n  group_by(person_race_abbr, charge_cat) |&gt; \n  filter(person_race_abbr == \"A\") |&gt;\n  summarise(appearances = n()) |&gt; \n  arrange(desc(appearances))\n\nasianarrests\n\n\n  \n\n\n\nOnce again, Asian people are also most commonly being arrested under OLS for drugs. Let’s make this a graph.\n\nggplot(asianarrests, aes(x = reorder(charge_cat, appearances), y = appearances)) +\n  geom_col(fill = \"#0AB7F7\", stat = \"identity\") +\n  geom_text(aes(label = appearances, hjust = 1.8)) +\n  coord_flip() +\n  labs(\n    title = \"Charge types for Asian arrestees\",\n    subtitle = str_wrap(\"Operation Lonestar arrest data shows Asian people are being arrested mostly for drug and smuggling related charges.\", width = 65),\n    caption = \"By Olivia Dilley\",\n    x = \"\",\n    y = \"Number of arrests\"\n  )\n\n\n\n\n\n\n\n\n\n\n\nNow we’ll look at who is doing the arresting and where?\nWe’ll look into officers, ID, and county.\n\nolsofficers &lt;- olsdata |&gt; \n  group_by(arresting_officer, officer_id, arrest_county) |&gt; \n  summarise(appearances = n()) |&gt;\n  arrange(desc(appearances))\n\nolsofficers\n\n\n  \n\n\n\nWe can see that the top 3 officers are not identified by name, meaning they are from the VERSA data set (which removed officer name identification). It’s possible that some of the officer IDs, a column from the newer VERSA program, represent some of the same arresting officers named in the SPURS data set. Unfortunately, there’s no way for us to check that without further public information requests since the identities are hidden by the officer ID in the new program.",
+    "crumbs": [
+      "Final Analysis"
+    ]
+  },
+  {
+    "objectID": "04-analysisgraphics.html#categories",
+    "href": "04-analysisgraphics.html#categories",
+    "title": "Final Analysis",
+    "section": "Categories",
+    "text": "Categories\nNow we’ll be using those categories we made to look into the smuggling and drug categories.\n\nDrug\nOperation Lone Star focused heavily on stopping drugs from crossing the border. Lauren wanted us to look at what types of drug-related charges were happening. Because the discourse around OLS was heavily focused on Fentanyl, we focused on that to see whether or not what Abbott’s administration was saying about what OLS was accomplishing was true.\n\nWhat kind of drug charges are happening? Are many fentanyl-related like Abbott claims?\nLet’s look at the drug charge category and break it down by type of drug. We used drug statute codes from the Texas’ Health and Safety Code and the Drug Enforcement Agency to categorize each drug.\n\ndrug_ols &lt;- cat_ols |&gt;\n  group_by(charge) |&gt;\n  filter(charge_cat == \"Drug\") |&gt;\n  mutate(\n    drug_type = case_when(\n      str_detect(charge, \"Mari|MARI|Marj|MARJ\") ~ \"Marijuana\",\n      str_detect(charge, \"Fent|FENT|1-B\") ~ \"Fentanyl\",\n      str_detect(charge, \"Cocaine|COCAINE\") ~ \"Cocaine\",\n      str_detect(charge, \"Meth|METH\") ~ \"Crystal Meth\",\n      str_detect(charge, \"1a|1-A|LSD\")  ~ \"LSD\",\n      str_detect(charge, \"Heroin|HEROIN\") ~ \"Heroin\"),\n    \n    default. = NA,\n    \n    fentanyl = case_when(\n      str_detect(charge, \"Fent|FENT|1-B|Schedule Ii/\") ~ \"YES\"),        \n    \n    default. = NA,\n  \n    marijuana = case_when(\n        str_detect(charge, \"Mari|MARI|Marj|MARJ|Drug Test|Schedule I/\") ~ \"YES\"),\n    \n    default. = NA,\n    \n    drug_weapon = case_when(\n          str_detect(charge, \"DRUG/WEAPON\") ~ \"YES\"),\n    \n    default. = NA   )\n\ndrug_ols |&gt; count(drug_type, fentanyl, marijuana, drug_weapon)  \n\n\n  \n\n\n\nOriginally, we tried categorizing the charges by type of drug, but this doesn’t work out well because of the different codes used to separate each drug. So we decided to focus on any charges that could be related to fentanyl (as some are unclear) to answer our question. We also focused on marijuana charges, one of the more recurring drug offenses. Then we made a column called drug_weapon for all charges under the drug category that could also be weapons charges.\nKey for Drug Categories:\n\nPoss Cs Pg: Possession of Controlled Substance in Penalty Group\nFentanyl: Group 1-B (any type of fentanyl)\nDrug schedule: Can refer to a group of drugs (for example, fentanyl can be found in schedule II drugs)\n1-A: LSD as well as any of its salts, isomers, and salts of isomers.\nOFFENSE: FALSIFICATION OF DRUG TEST RESULTS: Can refer to failing an authorized marijuana drug test Under Sec. 481.133., we noted that as “YES” under the marijuana column.\n\nLet’s count the amount of drug charges that can be related to fentanyl or marijuana:\n\ndrug_ols_analysis &lt;- drug_ols |&gt;\n  ungroup() |&gt;\n  mutate(drug_charge = case_when(\n    str_detect(fentanyl, \"YES\") ~ \"Fentanyl\",\n    str_detect(marijuana, \"YES\") ~ \"Marijuana\",\n    .default = \"Other\"   )) \n\ndrug_ols_analysis_new &lt;- drug_ols_analysis |&gt; count(drug_charge) |&gt; \n    rename(charge_count = n)\n\ndrug_ols_analysis_new\n\n\n  \n\n\n\nThen we decided to make a simple bar graph to show the amount of charges that can be related to fentanyl or marijuana.\n\nggplot(drug_ols_analysis_new,\n  aes(x = charge_count, y =  drug_charge, fill = drug_charge)\n) +\n  geom_col(width = .6) +\n  geom_text(aes(label = charge_count), \n            hjust = 1.2,\n            color = \"white\") +\n    labs(\n    title = \"What types of drugs does Operation Lone Star target?\",\n    x = \"Number of charges\",\n    y = \"Type of drug charge\",\n    subtitle = str_wrap(\"This analysis looked at fentanyl and marijuana related drug charges. Most drug charges were not related to either fentanyl or marijuana. Because drug charges are recorded differently in each data set, further anaylsis is needed to determine if this analysis reflects the most accurate number for each type of drug.\"),\n    caption = \"Source = Operation Lone Star Data\"\n    ) +\n  scale_fill_manual(values = c(\n    \"Other\" = \"#2471a3\",\n    \"Marijuana\" = \"#27ae60\",\n    \"Fentanyl\" = \"#cb4335\"\n  )) +\n      theme(legend.position = \"none\")\n\n\n\n\n\n\n\n\n\n\nData Takeaways for Drug Charges\n\nAt least 1,571 charges in both OLS data sets are related to possession/manufacturing of fentanyl. This is lower than the amount of charges related to marijuana, which are at least 9,491.\nOverall, fentanyl charges identified in this analysis account for little over 6% of all drug charges, while marijuana charges account for little over 40% of the drug charges (from the total 23,233 drug charges identified).\n\n\n\n\nSolo Drug Charges\nWhen talking to Lauren about the importance of drug charges within Operation Lone Star, she mentioned separating solo drug charges from the data set. To do this, we filtered and looked at single drug charges in order to look at what drugs were being associated to each charge. This helps us narrow down drug charges in the analysis.\nNow let’s look at the individuals being charged for drug charges:\n\ncat_ols |&gt;   filter(charge_cat == \"Drug\") |&gt;   count(charge_count)\n\n\n  \n\n\n\n\nData Takeaways for Solo Charges\n\nMost charges are solo charges.\n\nNow let’s look at the solo charges and what drugs they are related too.\n\nsolo_drug_ols &lt;-\n  cat_ols |&gt;   group_by(charge, charge_count) |&gt;   filter(charge_cat == \"Drug\") |&gt; mutate(\n    fentanyl = case_when(\n      str_detect(charge, \"Fent|FENT|1-B|Schedule Ii/\") ~ \"YES\"),\n    marijuana = case_when(\n      str_detect(charge, \"Mari|MARI|Marj|MARJ|Drug Test|Schedule I/\") ~ \"YES\"),\n    default. = NA,) |&gt;\n  filter(charge_count == \"1\") \n\n\nsolo_drug_ols |&gt;\n  count(charge, charge_count, fentanyl, marijuana)\n\n\n  \n\n\n\nNow we’ll group by what type of drug.\n\nsolo_drug_type &lt;-\n  solo_drug_ols |&gt;   ungroup() |&gt;   mutate(\n    drug_charge_s = case_when(\n      str_detect(fentanyl, \"YES\") ~ \"Fentanyl\",\n      str_detect(marijuana, \"YES\") ~ \"Marijuana\",\n      .default = \"Other\"\n    )\n  )\n\nsolo_drug_type_chart &lt;- solo_drug_type |&gt;   count(drug_charge_s) |&gt; \n  rename(charge_count = n)\n\nsolo_drug_type_chart\n\n\n  \n\n\n\nNow we’ll make a chart to look at this data.\n\nggplot(solo_drug_type_chart,\n  aes(x = charge_count, y =  drug_charge_s, fill = drug_charge_s)\n) +  \n  geom_col(width = .6) + \n  geom_text(aes(label = charge_count), \n            hjust = 1.3,\n            color = \"white\") +\n  labs(\n    title = \"What do solo drug charges look like under Operation Lone Star?\",\n    x = \"Number of charges\",\n    y = \"Type of drug charge\",\n    subtitle = str_wrap(\n      \"This analysis looked at fentanyl and marijuana related drug charges. Most drug charges were not related to either fentanyl or marijuana. Because drug charges are recorded differently in each data set, further anaylsis is needed to determine if this analysis reflects the most accurate number for each type of drug.\"\n    ),\n    caption = \"Source = Operation Lone Star Data\"\n  ) +\n  scale_fill_manual(values = c(\n    \"Other\" = \"#2471a3\",\n    \"Marijuana\" = \"#27ae60\",\n    \"Fentanyl\" = \"#cb4335\"\n  )) +\n  theme(legend.position = \"none\")\n\n\n\n\n\n\n\n\n\n\nWhere are solo drug charges located?\n\nsolo_drug_ols |&gt;\n  group_by(arrest_county) |&gt;  \n  summarise(appearances = n()) |&gt; \n  arrange(desc(appearances))\n\n\n  \n\n\n\nLet’s look at Ector, the 6th county with the most solo drug charges not on the border.\n\nector_example &lt;-\n  solo_drug_ols |&gt;   ungroup() |&gt;   filter(arrest_county == \"Ector\") |&gt;   mutate(\n    drug_charge_s = case_when(\n      str_detect(fentanyl, \"YES\") ~ \"Fentanyl\",\n      str_detect(marijuana, \"YES\") ~ \"Marijuana\",\n      .default = \"Other\"\n    )\n  ) \n\nector_example |&gt;   count(drug_charge_s)\n\n\n  \n\n\n\n\n\nData Takeaways for Solo Charges\n\nMost of the solo drug charges in Ector county are unrelated to fentanyl. Notably, Odessa is part of Ector county.\n\n\n\n\nSmuggling\n\nBreaking down the Smuggling charge category\nLauren has a theory that Black people in areas like Houston are being tricked into smuggling people across the border. We want to look at the smuggling category and break down how many offenses are from Black people and where those offenses took place so we can test that theory.\nFirst we’ll look at the smuggling charges for all races and tally them to see who is getting arrested for smuggling the most.\n\ncat_ols |&gt; \n  group_by(person_race_abbr, charge_cat) |&gt; \n  filter(charge_cat == \"Smuggling/Trafficking of Persons\") |&gt; \n  summarise(appearances = n()) |&gt; \n  arrange(desc(appearances))\n\n\n  \n\n\n\nLauren thinks this number of Black smuggling offenses is still substantial for Texas’ population demographics, despite it only being 3rd highest behind Hispanic and White.",
+    "crumbs": [
+      "Final Analysis"
+    ]
+  },
+  {
+    "objectID": "04-analysisgraphics.html#smuggling-by-county-and-race",
+    "href": "04-analysisgraphics.html#smuggling-by-county-and-race",
+    "title": "Final Analysis",
+    "section": "Smuggling by county and race",
+    "text": "Smuggling by county and race\nLet’s look at all races smuggling charges by county to see how many smuggling charges there are for each race in each specific county.\n\nsmuggle_ols &lt;- cat_ols |&gt;\n    group_by(person_race_abbr, charge_cat, arrest_county) |&gt;\n    summarise(appearances = n()) |&gt;\n    arrange(desc(appearances)) |&gt;\n    filter(charge_cat == \"Smuggling/Trafficking of Persons\") |&gt;\n    select(!charge_cat)\n\nsmuggle_ols\n\n\n  \n\n\n\n\nData Takeaways for Smuggling Charges\n\nThe most common is Hispanic people smuggling in areas near the border, like Kinney and El Paso county.\nBlack smuggling in Kinney is also in the top 10.",
+    "crumbs": [
+      "Final Analysis"
+    ]
+  },
+  {
+    "objectID": "04-analysisgraphics.html#breaking-down-the-black-smuggling-category-by-county-to-test-laurens-theory",
+    "href": "04-analysisgraphics.html#breaking-down-the-black-smuggling-category-by-county-to-test-laurens-theory",
+    "title": "Final Analysis",
+    "section": "Breaking down the Black smuggling category by county to test Lauren’s theory",
+    "text": "Breaking down the Black smuggling category by county to test Lauren’s theory\nLet’s break down the smuggling category by county for Black offenders to see where they are most commonly being arrested (not where they are from necessarily). We’ll also filter for any counties where there were more than 10 arrests of Black people for smuggling charges so we can ignore the counties where it only happened a few times.\n\nb_smuggling &lt;- cat_ols |&gt;\n  group_by(arrest_county, arrest_state, person_race_abbr, charge_cat) |&gt;\n  filter(person_race_abbr == \"B\", charge_cat == \"Smuggling/Trafficking of Persons\") |&gt; \n  summarise(appearances = n()) |&gt; \n  arrange(desc(appearances))\n\nb_smuggling_filtered &lt;- b_smuggling |&gt; \n  filter(appearances &gt; 9)\n\nb_smuggling_filtered\n\n\n  \n\n\n\n\nWe’ll make a graph for this to visualize it better.\n\nggplot(b_smuggling_filtered, aes(x = reorder(arrest_county, appearances), y = appearances)) +\n  geom_col(stat = \"identity\", fill = \"#45b39d\") +\n  geom_text(aes(label = appearances, hjust = ifelse(appearances &gt; 23, 1.2, -.1)),\n  color = \"black\") +\n  coord_flip() +\n  labs(\n    title = \"Black smuggling arrests by county\",\n    subtitle = str_wrap(\"Operation Lonestar arrest data shows Black people are being arrested most frequently for smuggling charges in these counties. The county with the most occurences is Kinney County, which is true across all races. Kinney County is on the border near a popular crossing area.\"),\n    caption = \"By Olivia Dilley\",\n    x = \"\",\n    y = \"Number of arrests\"\n  )\n\n\n\n\n\n\n\n\n\n\nNow let’s see the breakdowns for other races, starting with white smuggling arrests.\nWe’ll also filter for any counties where there were more than 10 arrests of white people for smuggling charges so we can ignore the counties where it only happened a few times.\n\nw_smuggling &lt;- cat_ols |&gt;\n  group_by(arrest_county, arrest_state, person_race_abbr, charge_cat) |&gt;\n  filter(person_race_abbr == \"W\", charge_cat == \"Smuggling/Trafficking of Persons\") |&gt; \n  summarise(appearances = n()) |&gt; \n  arrange(desc(appearances))\n\nw_smuggling_filtered &lt;- w_smuggling |&gt; \n  filter(appearances &gt; 9)\n\nw_smuggling_filtered\n\n\n  \n\n\n\n\nAnd we’ll make a plot for this too.\n\nggplot(w_smuggling_filtered, aes(x = reorder(arrest_county, appearances), y = appearances)) +\n  geom_col(stat = \"identity\", fill = \"#45b39d\") +\n  geom_text(aes(label = appearances, hjust = ifelse(appearances &gt; 22, 1.2, -.1)),\n  color = \"black\") +\n  coord_flip() +\n  labs(\n    title = \"White smuggling arrests by county\",\n    subtitle = str_wrap(\"Operation Lonestar arrest data shows white people are being arrested most frequently for smuggling charges in these counties. The county with the most occurences is Kinney County, which is true across all races. Kinney County is on the border near a popular crossing area.\"),\n    caption = \"By Olivia Dilley\",\n    x = \"\",\n    y = \"Number of arrests\"\n  )\n\n\n\n\n\n\n\n\n\n\n\nNow let’s see the Hispanic breakdown.\nBecause there are so many arrests of Hispanic people for smuggling, we’ll have to filter this to any county with more than 100 arrests.\n\nh_smuggling &lt;- cat_ols |&gt;\n  group_by(arrest_county, arrest_state, person_race_abbr, charge_cat) |&gt;\n  filter(person_race_abbr == \"H\", charge_cat == \"Smuggling/Trafficking of Persons\") |&gt; \n  summarise(appearances = n()) |&gt; \n  arrange(desc(appearances))\n\nh_smuggling_filtered &lt;- h_smuggling |&gt; \n  filter(appearances &gt; 100)\n\nh_smuggling_filtered\n\n\n  \n\n\n\n\nNow we’ll make a plot.\n\nggplot(h_smuggling_filtered, aes(x = reorder(arrest_county, appearances), y = appearances)) +\n  geom_col(stat = \"identity\", fill = \"#45b39d\") +\n  geom_text(aes(label = appearances, hjust = 1.2),\n  color = \"black\") +\n  coord_flip() +\n  labs(\n    title = \"Hispanic smuggling arrests by county\",\n    subtitle = str_wrap(\"Operation Lonestar arrest data shows Hispanic people are being arrested most frequently for smuggling charges in these counties. The county with the most occurences is Kinney County, which is true across all races. Kinney County is on the border near a popular crossing area.\"),\n    caption = \"By Olivia Dilley\",\n    x = \"\",\n    y = \"Number of arrests\"\n  )\n\n\n\n\n\n\n\n\n\n\nData Takeaways for Smuggling by County\n\nAcross the board, Kinney has the highest smuggling arrests in each race, so it doesn’t seem like Black arrests are more common there than any other race.\n\nRegardless, we looked into the breakdown of arrests in Kinney county for Black people charged with smuggling crimes just to see if anything stuck out.\n\nkinney_b_smuggling &lt;- cat_ols |&gt; \n  group_by(arrest_county, arrest_state, person_race_abbr, charge_cat) |&gt; \n  filter(arrest_county == \"Kinney\", person_race_abbr == \"B\", charge_cat == \"Smuggling/Trafficking of Persons\") |&gt; \n  arrange(desc(charge_count))\n\nkinney_b_smuggling_filtered &lt;- kinney_b_smuggling |&gt; \n  filter(charge_count &gt; 1)\n\nkinney_b_smuggling_filtered\n\n\n  \n\n\n\nWe can make a plot to look into the arrests over time to see if any dates had a much higher number of arrests than others. Since this data is very granular and there are days with no arrests, the original line is jagged. We decided to use a linear regression to determine if there was a trend over time in the relationship of Black smuggling arrests throughout time.\n\nggplot(kinney_b_smuggling_filtered, aes(x=charge_date, y=charge_count)) +\n  geom_line(color = \"black\", alpha = 0.5) +\n  geom_smooth(se = FALSE, color = \"red\") +\n  labs(\n    title = \"Black smuggling arrests over time in Kinney County\",\n    subtitle = str_wrap(\"Operation Lonestar arrest data shows Black people are being arrested in Kinney for smuggling charges 4x as much as in any other county in OLS parameters. This breakdown shows those arrests over time.\"),\n    caption = \"By Olivia Dilley\",\n    x = \"Date\",\n    y = \"Charges\"\n  )\n\n\n\n\n\n\n\n\n\n\nData Takeaways for Kinney County Smuggling Arrests\n\nBecause Kinney is the highest across all races, and the Black smuggling arrests don’t very super significantly over time, we didn’t see anything stand out from the data.\nThe linear regression that we used in our analysis also didn’t show any major trend over time, suggesting there’s no period where charges for smuggling were significant for Black arrestees.",
+    "crumbs": [
+      "Final Analysis"
+    ]
+  },
+  {
+    "objectID": "04-analysisgraphics.html#lets-compare-percentages-of-arrests-by-races-with-tabyls",
+    "href": "04-analysisgraphics.html#lets-compare-percentages-of-arrests-by-races-with-tabyls",
+    "title": "Final Analysis",
+    "section": "Let’s compare percentages of arrests by races with tabyls",
+    "text": "Let’s compare percentages of arrests by races with tabyls\nWe’ll make some tables where we can look at percentages of arrests by race for each county, officers, etc.\n\nCounty and race tabyl\nIn this table, we’ll look at arrest county and race to see if any counties have higher percentages of Black arrests in general (not just smuggling arrests).\n\nolsdata |&gt;\n  tabyl(arrest_county, person_race_abbr) |&gt; \n  adorn_percentages() |&gt; \n  adorn_pct_formatting() |&gt; \n  adorn_ns()\n\n\n  \n\n\n\n\nData Takeaways for County and Race Percentages\n\nMost of the Black arrests in these counties seem on par with other races.\nHispanic arrests are typically the highest percentage in every county.\nA few of the percentages of Black arrests are greater than 25% of all arrests in a county, but the number of arrests in those counties aren’t super high, so it doesn’t seem like there is any one county that is arresting more Black people than other races at a significant rate.\n\n\n\n\nSmuggling arrests by race and county %\nWe’ll now look specifically into the percentages of smuggling arrests to see if any county is arresting Black people for smuggling more than other races.\n\ncat_ols |&gt; \n  filter(charge_cat == \"Smuggling/Trafficking of Persons\") |&gt; \n  tabyl(person_race_abbr, arrest_county) |&gt; \n  adorn_percentages(\"col\") |&gt; \n  adorn_pct_formatting() |&gt; \n  tibble()\n\n\n  \n\n\n\n\n\nLooking into specific officers\nLet’s see if any officers stick out as arresting more Black people than other races. We’ll filter their arrests to be more than 100 so we can ensure that there are a large number of arrests by a specific officer in general. (Otherwise, our findings wouldn’t be very significant.)\n\nolsdata |&gt; \n  tabyl(arresting_officer, person_race_abbr) |&gt;\n  adorn_totals(\"col\", name = \"col_total\") |&gt; \n  adorn_totals(\"row\") |&gt; \n  tibble() |&gt; \n  arrange(desc(col_total)) |&gt; \n  filter(col_total &gt; 100)\n\n\n  \n\n\n\n\nData Takeaways for Officers\n\nAny time an officer has a high number of Black arrests, they also have a high number of Hispanic arrests.\nMost officers have the highest number of arrests of Hispanic people.\nThere’s a large number of officers which are listed as NA which is due to the fact that the newer VERSA program hides identities behind officer ID numbers.\nOverall, this analysis doesn’t look super indicative of any one officer arresting more Black people than any other race.",
+    "crumbs": [
+      "Final Analysis"
+    ]
+  },
+  {
+    "objectID": "04-analysisgraphics.html#main-takeaways-and-conclusion",
+    "href": "04-analysisgraphics.html#main-takeaways-and-conclusion",
+    "title": "Final Analysis",
+    "section": "Main takeaways and Conclusion",
+    "text": "Main takeaways and Conclusion\n\nDemographics: When it comes to the demographics of those arrested under Operation Lone Star, Hispanics are overwhelmingly the most arrested. Those arrested tend to be males between late teenage to young adult ages (18-27). The most common type of charge across all races is drug-related.\nDrugs: The data itself is hard to read because the types of drugs and the way charges are documented isn’t consistent throughout time or programs. Therefore, among the drug charges we were able to categorize and identify, we can’t determine if the majority of those charges are fentanyl or marijuana related. However, there were instances where we were able to determine a specific drug, and in those cases, marijuana charges overwhelmingly surpassed fentanyl charges. The same was true for solo drug charges.\nPercentage Proportionality: Percentage-wise, most of the Black arrests in any specific county are on par with other races. Typically, Hispanic people are the most arrested in any county. Though some counties have percentages of Black arrests higher than 25%, the amount of people being arrested in those counties is so low that it doesn’t stand out. Additionally, when an officer has a high number of Black arrests, they have higher numbers of Hispanic arrests too, meaning Black people aren’t being singled out. Overall, the analysis doesn’t indicate that any officer or county is arresting more Black people than any other race.",
+    "crumbs": [
+      "Final Analysis"
+    ]
+  },
+  {
+    "objectID": "02-combine.html",
+    "href": "02-combine.html",
+    "title": "Combining the Datasets",
+    "section": "",
+    "text": "Loading the libraries\n\nlibrary(tidyverse)\nlibrary(janitor)\nlibrary(lubridate)",
+    "crumbs": [
+      "Combining the Datasets"
+    ]
+  },
+  {
+    "objectID": "02-combine.html#set-up",
+    "href": "02-combine.html#set-up",
+    "title": "Combining the Datasets",
+    "section": "",
+    "text": "Loading the libraries\n\nlibrary(tidyverse)\nlibrary(janitor)\nlibrary(lubridate)",
+    "crumbs": [
+      "Combining the Datasets"
+    ]
+  },
+  {
+    "objectID": "02-combine.html#importing-versa",
+    "href": "02-combine.html#importing-versa",
+    "title": "Combining the Datasets",
+    "section": "Importing VERSA",
+    "text": "Importing VERSA\n\nversa_data &lt;- read_rds(\"data-processed/01-clean-versa.rds\") |&gt; glimpse()\n\nRows: 17,256\nColumns: 18\n$ primary_key         &lt;chr&gt; \"TX20234\", \"TX20234\", \"TX20235\", \"TX20237\", \"TX202…\n$ charge              &lt;chr&gt; \"Poss Marij &lt; 2OZ\", \"Poss CS PG 2 &gt;= 1G &lt; 4G\", \"WA…\n$ charge_count        &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…\n$ ethnicity           &lt;chr&gt; \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", …\n$ charge_date         &lt;date&gt; 2023-01-03, 2023-01-03, 2023-01-21, 2023-01-22, 2…\n$ person_age          &lt;dbl&gt; 27, 27, 50, 37, NA, 26, 21, NA, 29, NA, 30, 21, 25…\n$ person_first_name   &lt;chr&gt; \"CRISPIN\", \"CRISPIN\", \"MOISES\", \"FERMIN\", \"JOSE\", …\n$ person_second_name  &lt;chr&gt; \"III\", \"III\", NA, NA, \"CARLOS\", NA, \"GUADALUPE\", \"…\n$ person_third_name   &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n$ person_last_name    &lt;chr&gt; \"MERCADO\", \"MERCADO\", \"DE LA CRUZ LOPEZ\", \"RODRIGU…\n$ officer_id          &lt;dbl&gt; 15882, 15882, 15969, 15001, 15001, 15001, 15001, 1…\n$ arrest_county       &lt;chr&gt; \"Dimmit\", \"Dimmit\", \"Dimmit\", \"Kinney\", \"Kinney\", …\n$ code                &lt;chr&gt; \"HS\", \"HS\", \"CP\", \"PC\", \"PC\", \"PC\", \"PC\", \"PC\", \"P…\n$ severity_code       &lt;chr&gt; \"Versa Misdemeanor Charges\", \"VT Felony Charges\", …\n$ severity_code_clean &lt;chr&gt; \"Misdemeanor Charges\", \"Felony Charges\", \"Federal/…\n$ person_race_abbr    &lt;chr&gt; \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", …\n$ person_gender_abbr  &lt;chr&gt; \"M\", \"M\", \"M\", \"M\", \"M\", \"F\", \"M\", \"M\", \"M\", \"M\", …\n$ arrest_state        &lt;chr&gt; \"TEXAS\", \"TEXAS\", \"TEXAS\", \"TEXAS\", \"TEXAS\", \"TEXA…",
+    "crumbs": [
+      "Combining the Datasets"
+    ]
+  },
+  {
+    "objectID": "02-combine.html#import-spurs",
+    "href": "02-combine.html#import-spurs",
+    "title": "Combining the Datasets",
+    "section": "Import SPURS",
+    "text": "Import SPURS\n\nspurs_data &lt;- read_rds(\"data-processed/01-clean-spurs.rds\") |&gt; glimpse()\n\nRows: 41,379\nColumns: 19\n$ arrest_county       &lt;chr&gt; \"Aransas\", \"Bee\", \"Bee\", \"Cameron\", \"Cameron\", \"Ec…\n$ arrest_division     &lt;chr&gt; \"Texas Highway Patrol\", \"Texas Highway Patrol\", \"T…\n$ arrest_id           &lt;dbl&gt; 209274810, 210182331, 223969513, 213772403, 213772…\n$ arrest_state        &lt;chr&gt; \"TEXAS\", \"TEXAS\", \"TEXAS\", \"TEXAS\", \"TEXAS\", \"TEXA…\n$ arrest_urn          &lt;chr&gt; \"CMAR00171811\", \"CMAR00172979\", \"CMAR00183927\", \"C…\n$ arresting_officer   &lt;chr&gt; \"Kaitlynn King\", \"Luke William Kanz\", \"Justin K Ja…\n$ spurs_officer_id    &lt;chr&gt; \"Kk26997\", \"Lk23525\", \"Jj25825\", \"Jc05699\", \"Jc056…\n$ statute             &lt;chr&gt; \"46.02(A)\", \"481.121(B)(1)\", \"46.02(A)\", \"481.121(…\n$ code                &lt;chr&gt; \"Penal Code\", \"Health And Safety Code\", \"Penal Cod…\n$ inv_number          &lt;chr&gt; \"2022I-THP3-149480\", \"2022I-THP3-149608\", \"2022I-T…\n$ severity_code_clean &lt;chr&gt; \"Misdemeanor Charges\", \"Misdemeanor Charges\", \"Mis…\n$ charge              &lt;chr&gt; \"Unl Carrying Weapon\", \"Possession Of Marihuana &lt;2…\n$ person_first_name   &lt;chr&gt; \"WESLIN\", \"JOEL\", \"JESUS\", \"SERGIO\", \"SERGIO\", \"KI…\n$ person_last_name    &lt;chr&gt; \"LEMKE\", \"CASAS\", \"CADENA\", \"ARMENDAREZ-GARCA\", \"A…\n$ person_age          &lt;dbl&gt; 23, 27, 52, 23, 23, 29, 29, 45, 29, 17, 24, 24, 24…\n$ charge_date         &lt;date&gt; 2022-01-01, 2022-01-01, 2022-01-01, 2022-01-01, 2…\n$ person_race_abbr    &lt;chr&gt; \"W\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", …\n$ person_gender_abbr  &lt;chr&gt; \"M\", \"M\", \"M\", \"M\", \"M\", \"F\", \"F\", \"M\", \"M\", \"M\", …\n$ charge_count        &lt;dbl&gt; 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1,…",
+    "crumbs": [
+      "Combining the Datasets"
+    ]
+  },
+  {
+    "objectID": "02-combine.html#combine-both-clean-data-sets",
+    "href": "02-combine.html#combine-both-clean-data-sets",
+    "title": "Combining the Datasets",
+    "section": "Combine both clean data sets",
+    "text": "Combine both clean data sets\n\ndata_combine &lt;- versa_data |&gt; \n  bind_rows(spurs_data)\n\ndata_combine",
+    "crumbs": [
+      "Combining the Datasets"
+    ]
+  },
+  {
+    "objectID": "02-combine.html#export-combined-file",
+    "href": "02-combine.html#export-combined-file",
+    "title": "Combining the Datasets",
+    "section": "Export combined file",
+    "text": "Export combined file\n\ndata_combine |&gt;\nwrite_rds(\"data-processed/02-combine.rds\")",
+    "crumbs": [
+      "Combining the Datasets"
+    ]
+  },
+  {
+    "objectID": "01-cleaning-versa.html",
+    "href": "01-cleaning-versa.html",
+    "title": "Maria’s Cleaning",
+    "section": "",
+    "text": "The steps we’ll take to prepare our data:\n\nDownload the data\nImport it into our notebook\nClean up data types and columns\nExport the data for next notebook",
+    "crumbs": [
+      "Maria's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-cleaning-versa.html#goals-of-this-notebook",
+    "href": "01-cleaning-versa.html#goals-of-this-notebook",
+    "title": "Maria’s Cleaning",
+    "section": "",
+    "text": "The steps we’ll take to prepare our data:\n\nDownload the data\nImport it into our notebook\nClean up data types and columns\nExport the data for next notebook",
+    "crumbs": [
+      "Maria's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-cleaning-versa.html#downloading-the-data",
+    "href": "01-cleaning-versa.html#downloading-the-data",
+    "title": "Maria’s Cleaning",
+    "section": "Downloading the Data",
+    "text": "Downloading the Data\nIn this section of the cleaning notebook, we’re loading the VERSA program data. This data accounts for arrests made under Operation Lone Star starting in January 2023.\nHere is the summary of the differences between SPURS system and VERSA from the Depart of Public Safety Communications:\n“Please note that arrests are now documented on two spreadsheets due to the implementation of a new record management system in 2023 by the Texas Highway Patrol (THP). Prior to January 2023, THP utilized the Enterprise Management (EM) System for traffic enforcement activity (written warnings, citations, and CMV inspections) and SPURS for documenting entrusted property and criminal case reports. Beginning in January of 2023, THP underwent a statewide rollout of the Versaterm Software Suite, completed in August 2023, which serves as THP’s only RMS system for regular traffic enforcement activity, entrusted property, as well as general and arrest offense report entry.”\nMore information about Operation Lone Star is found in the index page of this website.\nThe data was obtained by a Public Records Request from KUT.",
+    "crumbs": [
+      "Maria's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-cleaning-versa.html#importing-the-data",
+    "href": "01-cleaning-versa.html#importing-the-data",
+    "title": "Maria’s Cleaning",
+    "section": "Importing the Data",
+    "text": "Importing the Data\nHere we’re importing the VERSA data spreadsheet that I already have downloaded to my “data-raw” folder. Then, we’re adding our data to a code chunk. For simplicity it will be called “versa_analysis,” which we will then peak at in order to look at what our data looks like in order to clean.\n\nversa_analysis&lt;- read_csv(\"data-raw/versa_raw_data.csv\") |&gt; clean_names()\n\nRows: 17256 Columns: 18\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr (15): Arrest Date, County Name, Primary Key, Jurisdiction, Statute, Clas...\ndbl  (3): Arrest Officer1, Charge Count, Apparent Age\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\nversa_analysis\n\n\n  \n\n\n\n\nversa_analysis |&gt; glimpse()\n\nRows: 17,256\nColumns: 18\n$ arrest_date         &lt;chr&gt; \"1/3/2023\", \"1/3/2023\", \"1/21/2023\", \"1/22/2023\", …\n$ county_name         &lt;chr&gt; \"Dimmit\", \"Dimmit\", \"Dimmit\", \"Kinney\", \"Kinney\", …\n$ primary_key         &lt;chr&gt; \"TX20234\", \"TX20234\", \"TX20235\", \"TX20237\", \"TX202…\n$ jurisdiction        &lt;chr&gt; \"TX\", \"TX\", \"TX\", \"TX\", \"TX\", \"TX\", \"TX\", \"TX\", \"T…\n$ arrest_officer1     &lt;dbl&gt; 15882, 15882, 15969, 15001, 15001, 15001, 15001, 1…\n$ statute             &lt;chr&gt; \"481.121(b)(1)\", \"481.116(c)\", \"15\", \"30.05(d)(1)\"…\n$ class               &lt;chr&gt; \"HS\", \"HS\", \"CP\", \"PC\", \"PC\", \"PC\", \"PC\", \"PC\", \"P…\n$ severity_code_group &lt;chr&gt; \"Versa Misdemeanor Charges\", \"VT Felony Charges\", …\n$ charge              &lt;chr&gt; \"Poss Marij &lt; 2OZ\", \"Poss CS PG 2 &gt;= 1G &lt; 4G\", \"WA…\n$ charge_count        &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…\n$ given_one           &lt;chr&gt; \"CRISPIN\", \"CRISPIN\", \"MOISES\", \"FERMIN\", \"JOSE\", …\n$ given_three         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n$ given_two           &lt;chr&gt; \"III\", \"III\", NA, NA, \"CARLOS\", NA, \"GUADALUPE\", \"…\n$ individual_surname  &lt;chr&gt; \"MERCADO\", \"MERCADO\", \"DE LA CRUZ LOPEZ\", \"RODRIGU…\n$ ethnicity           &lt;chr&gt; \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", …\n$ race                &lt;chr&gt; \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", …\n$ gender_code         &lt;chr&gt; \"M\", \"M\", \"M\", \"M\", \"M\", \"F\", \"M\", \"M\", \"M\", \"M\", …\n$ apparent_age        &lt;dbl&gt; 1997, 1997, 1974, 1987, NA, 1998, 2003, NA, 1995, …\n\n\nNotes for VERSA cleaning:\n\n“Given three” refers to two middle names, only very few individuals in the list have this listed\nYears are given as “apparent age” changed this to the actual age number to line up to SPURS “Person Age”",
+    "crumbs": [
+      "Maria's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-cleaning-versa.html#fixing-the-dates",
+    "href": "01-cleaning-versa.html#fixing-the-dates",
+    "title": "Maria’s Cleaning",
+    "section": "Fixing the dates",
+    "text": "Fixing the dates\nWe want to make sure that our dates are in month, date, year format for consistency in our analysis.\n\nversa_analysis_date &lt;- versa_analysis |&gt;\n mutate(\n   charge_date = mdy(arrest_date)\n  )\n\nversa_analysis_date |&gt; glimpse()\n\nRows: 17,256\nColumns: 19\n$ arrest_date         &lt;chr&gt; \"1/3/2023\", \"1/3/2023\", \"1/21/2023\", \"1/22/2023\", …\n$ county_name         &lt;chr&gt; \"Dimmit\", \"Dimmit\", \"Dimmit\", \"Kinney\", \"Kinney\", …\n$ primary_key         &lt;chr&gt; \"TX20234\", \"TX20234\", \"TX20235\", \"TX20237\", \"TX202…\n$ jurisdiction        &lt;chr&gt; \"TX\", \"TX\", \"TX\", \"TX\", \"TX\", \"TX\", \"TX\", \"TX\", \"T…\n$ arrest_officer1     &lt;dbl&gt; 15882, 15882, 15969, 15001, 15001, 15001, 15001, 1…\n$ statute             &lt;chr&gt; \"481.121(b)(1)\", \"481.116(c)\", \"15\", \"30.05(d)(1)\"…\n$ class               &lt;chr&gt; \"HS\", \"HS\", \"CP\", \"PC\", \"PC\", \"PC\", \"PC\", \"PC\", \"P…\n$ severity_code_group &lt;chr&gt; \"Versa Misdemeanor Charges\", \"VT Felony Charges\", …\n$ charge              &lt;chr&gt; \"Poss Marij &lt; 2OZ\", \"Poss CS PG 2 &gt;= 1G &lt; 4G\", \"WA…\n$ charge_count        &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…\n$ given_one           &lt;chr&gt; \"CRISPIN\", \"CRISPIN\", \"MOISES\", \"FERMIN\", \"JOSE\", …\n$ given_three         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n$ given_two           &lt;chr&gt; \"III\", \"III\", NA, NA, \"CARLOS\", NA, \"GUADALUPE\", \"…\n$ individual_surname  &lt;chr&gt; \"MERCADO\", \"MERCADO\", \"DE LA CRUZ LOPEZ\", \"RODRIGU…\n$ ethnicity           &lt;chr&gt; \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", …\n$ race                &lt;chr&gt; \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", …\n$ gender_code         &lt;chr&gt; \"M\", \"M\", \"M\", \"M\", \"M\", \"F\", \"M\", \"M\", \"M\", \"M\", …\n$ apparent_age        &lt;dbl&gt; 1997, 1997, 1974, 1987, NA, 1998, 2003, NA, 1995, …\n$ charge_date         &lt;date&gt; 2023-01-03, 2023-01-03, 2023-01-21, 2023-01-22, 2…\n\n\n\nversa_analysis_date\n\n\n  \n\n\n\nSummary Stats:\n\nversa_analysis_date |&gt; summary()\n\n arrest_date        county_name        primary_key        jurisdiction      \n Length:17256       Length:17256       Length:17256       Length:17256      \n Class :character   Class :character   Class :character   Class :character  \n Mode  :character   Mode  :character   Mode  :character   Mode  :character  \n                                                                            \n                                                                            \n                                                                            \n                                                                            \n arrest_officer1   statute             class           severity_code_group\n Min.   : 6154   Length:17256       Length:17256       Length:17256       \n 1st Qu.:14978   Class :character   Class :character   Class :character   \n Median :15752   Mode  :character   Mode  :character   Mode  :character   \n Mean   :15295                                                            \n 3rd Qu.:16099                                                            \n Max.   :16551                                                            \n NA's   :18                                                               \n    charge           charge_count     given_one         given_three       \n Length:17256       Min.   : 0.000   Length:17256       Length:17256      \n Class :character   1st Qu.: 1.000   Class :character   Class :character  \n Mode  :character   Median : 1.000   Mode  :character   Mode  :character  \n                    Mean   : 1.217                                        \n                    3rd Qu.: 1.000                                        \n                    Max.   :60.000                                        \n                                                                          \n  given_two         individual_surname  ethnicity             race          \n Length:17256       Length:17256       Length:17256       Length:17256      \n Class :character   Class :character   Class :character   Class :character  \n Mode  :character   Mode  :character   Mode  :character   Mode  :character  \n                                                                            \n                                                                            \n                                                                            \n                                                                            \n gender_code         apparent_age   charge_date        \n Length:17256       Min.   :1944   Min.   :2023-01-01  \n Class :character   1st Qu.:1986   1st Qu.:2023-06-30  \n Mode  :character   Median :1995   Median :2023-10-19  \n                    Mean   :1993   Mean   :2023-10-24  \n                    3rd Qu.:2001   3rd Qu.:2024-03-02  \n                    Max.   :2023   Max.   :2024-07-11  \n                    NA's   :6073",
+    "crumbs": [
+      "Maria's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-cleaning-versa.html#fixing-the-age",
+    "href": "01-cleaning-versa.html#fixing-the-age",
+    "title": "Maria’s Cleaning",
+    "section": "Fixing the age",
+    "text": "Fixing the age\nWe want our VERSA data to match up to SPURS when it comes the the “Person Age” data column. In order to do that we subtract this year’s date minus the “apparent_age” column of the VERSA data. This gives us the age in the same numerical format.\n\nversa_analysis_age &lt;- versa_analysis_date |&gt;\n  mutate(\n    person_age = 2024- apparent_age\n    )\n\nversa_analysis_age |&gt; glimpse()\n\nRows: 17,256\nColumns: 20\n$ arrest_date         &lt;chr&gt; \"1/3/2023\", \"1/3/2023\", \"1/21/2023\", \"1/22/2023\", …\n$ county_name         &lt;chr&gt; \"Dimmit\", \"Dimmit\", \"Dimmit\", \"Kinney\", \"Kinney\", …\n$ primary_key         &lt;chr&gt; \"TX20234\", \"TX20234\", \"TX20235\", \"TX20237\", \"TX202…\n$ jurisdiction        &lt;chr&gt; \"TX\", \"TX\", \"TX\", \"TX\", \"TX\", \"TX\", \"TX\", \"TX\", \"T…\n$ arrest_officer1     &lt;dbl&gt; 15882, 15882, 15969, 15001, 15001, 15001, 15001, 1…\n$ statute             &lt;chr&gt; \"481.121(b)(1)\", \"481.116(c)\", \"15\", \"30.05(d)(1)\"…\n$ class               &lt;chr&gt; \"HS\", \"HS\", \"CP\", \"PC\", \"PC\", \"PC\", \"PC\", \"PC\", \"P…\n$ severity_code_group &lt;chr&gt; \"Versa Misdemeanor Charges\", \"VT Felony Charges\", …\n$ charge              &lt;chr&gt; \"Poss Marij &lt; 2OZ\", \"Poss CS PG 2 &gt;= 1G &lt; 4G\", \"WA…\n$ charge_count        &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…\n$ given_one           &lt;chr&gt; \"CRISPIN\", \"CRISPIN\", \"MOISES\", \"FERMIN\", \"JOSE\", …\n$ given_three         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n$ given_two           &lt;chr&gt; \"III\", \"III\", NA, NA, \"CARLOS\", NA, \"GUADALUPE\", \"…\n$ individual_surname  &lt;chr&gt; \"MERCADO\", \"MERCADO\", \"DE LA CRUZ LOPEZ\", \"RODRIGU…\n$ ethnicity           &lt;chr&gt; \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", …\n$ race                &lt;chr&gt; \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", …\n$ gender_code         &lt;chr&gt; \"M\", \"M\", \"M\", \"M\", \"M\", \"F\", \"M\", \"M\", \"M\", \"M\", …\n$ apparent_age        &lt;dbl&gt; 1997, 1997, 1974, 1987, NA, 1998, 2003, NA, 1995, …\n$ charge_date         &lt;date&gt; 2023-01-03, 2023-01-03, 2023-01-21, 2023-01-22, 2…\n$ person_age          &lt;dbl&gt; 27, 27, 50, 37, NA, 26, 21, NA, 29, NA, 30, 21, 25…",
+    "crumbs": [
+      "Maria's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-cleaning-versa.html#fixing-names",
+    "href": "01-cleaning-versa.html#fixing-names",
+    "title": "Maria’s Cleaning",
+    "section": "Fixing Names",
+    "text": "Fixing Names\nWe want to change the columns for the names of the offenders, so it matches up to the SPURS data set. Theb we want to change the officer column to “officer” and\n\nversa_analysis_names &lt;- versa_analysis_age |&gt;\n  mutate(\n    person_first_name = given_one, \n    person_second_name = given_two, \n    person_third_name = given_three, \n    person_last_name = individual_surname,\n    officer_id = arrest_officer1, \n    arrest_county = county_name, \n    code = class,\n    severity_code = severity_code_group, \n    person_race_abbr = race, \n    person_gender_abbr = gender_code, \n    )\n\nversa_analysis_names |&gt; glimpse()\n\nRows: 17,256\nColumns: 30\n$ arrest_date         &lt;chr&gt; \"1/3/2023\", \"1/3/2023\", \"1/21/2023\", \"1/22/2023\", …\n$ county_name         &lt;chr&gt; \"Dimmit\", \"Dimmit\", \"Dimmit\", \"Kinney\", \"Kinney\", …\n$ primary_key         &lt;chr&gt; \"TX20234\", \"TX20234\", \"TX20235\", \"TX20237\", \"TX202…\n$ jurisdiction        &lt;chr&gt; \"TX\", \"TX\", \"TX\", \"TX\", \"TX\", \"TX\", \"TX\", \"TX\", \"T…\n$ arrest_officer1     &lt;dbl&gt; 15882, 15882, 15969, 15001, 15001, 15001, 15001, 1…\n$ statute             &lt;chr&gt; \"481.121(b)(1)\", \"481.116(c)\", \"15\", \"30.05(d)(1)\"…\n$ class               &lt;chr&gt; \"HS\", \"HS\", \"CP\", \"PC\", \"PC\", \"PC\", \"PC\", \"PC\", \"P…\n$ severity_code_group &lt;chr&gt; \"Versa Misdemeanor Charges\", \"VT Felony Charges\", …\n$ charge              &lt;chr&gt; \"Poss Marij &lt; 2OZ\", \"Poss CS PG 2 &gt;= 1G &lt; 4G\", \"WA…\n$ charge_count        &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…\n$ given_one           &lt;chr&gt; \"CRISPIN\", \"CRISPIN\", \"MOISES\", \"FERMIN\", \"JOSE\", …\n$ given_three         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n$ given_two           &lt;chr&gt; \"III\", \"III\", NA, NA, \"CARLOS\", NA, \"GUADALUPE\", \"…\n$ individual_surname  &lt;chr&gt; \"MERCADO\", \"MERCADO\", \"DE LA CRUZ LOPEZ\", \"RODRIGU…\n$ ethnicity           &lt;chr&gt; \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", …\n$ race                &lt;chr&gt; \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", …\n$ gender_code         &lt;chr&gt; \"M\", \"M\", \"M\", \"M\", \"M\", \"F\", \"M\", \"M\", \"M\", \"M\", …\n$ apparent_age        &lt;dbl&gt; 1997, 1997, 1974, 1987, NA, 1998, 2003, NA, 1995, …\n$ charge_date         &lt;date&gt; 2023-01-03, 2023-01-03, 2023-01-21, 2023-01-22, 2…\n$ person_age          &lt;dbl&gt; 27, 27, 50, 37, NA, 26, 21, NA, 29, NA, 30, 21, 25…\n$ person_first_name   &lt;chr&gt; \"CRISPIN\", \"CRISPIN\", \"MOISES\", \"FERMIN\", \"JOSE\", …\n$ person_second_name  &lt;chr&gt; \"III\", \"III\", NA, NA, \"CARLOS\", NA, \"GUADALUPE\", \"…\n$ person_third_name   &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n$ person_last_name    &lt;chr&gt; \"MERCADO\", \"MERCADO\", \"DE LA CRUZ LOPEZ\", \"RODRIGU…\n$ officer_id          &lt;dbl&gt; 15882, 15882, 15969, 15001, 15001, 15001, 15001, 1…\n$ arrest_county       &lt;chr&gt; \"Dimmit\", \"Dimmit\", \"Dimmit\", \"Kinney\", \"Kinney\", …\n$ code                &lt;chr&gt; \"HS\", \"HS\", \"CP\", \"PC\", \"PC\", \"PC\", \"PC\", \"PC\", \"P…\n$ severity_code       &lt;chr&gt; \"Versa Misdemeanor Charges\", \"VT Felony Charges\", …\n$ person_race_abbr    &lt;chr&gt; \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", …\n$ person_gender_abbr  &lt;chr&gt; \"M\", \"M\", \"M\", \"M\", \"M\", \"F\", \"M\", \"M\", \"M\", \"M\", …",
+    "crumbs": [
+      "Maria's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-cleaning-versa.html#create-new-column-to-match-spurs-race-column",
+    "href": "01-cleaning-versa.html#create-new-column-to-match-spurs-race-column",
+    "title": "Maria’s Cleaning",
+    "section": "Create new column to match SPURS race column",
+    "text": "Create new column to match SPURS race column\nBecause the SPURS dataset uses the “race” column to identify both ethnicity and race, we created a new column that mirrors the SPURS way of documenting people’s profiles.\n\nversa_analysis_new &lt;- versa_analysis_names |&gt;\n  mutate(\n    person_race_abbr = if_else(ethnicity== \"H\", ethnicity, person_race_abbr), \n    arrest_state = case_match(jurisdiction, \"TX\" ~ \"TEXAS\")\n  )\n\nversa_analysis_new |&gt; glimpse()\n\nRows: 17,256\nColumns: 31\n$ arrest_date         &lt;chr&gt; \"1/3/2023\", \"1/3/2023\", \"1/21/2023\", \"1/22/2023\", …\n$ county_name         &lt;chr&gt; \"Dimmit\", \"Dimmit\", \"Dimmit\", \"Kinney\", \"Kinney\", …\n$ primary_key         &lt;chr&gt; \"TX20234\", \"TX20234\", \"TX20235\", \"TX20237\", \"TX202…\n$ jurisdiction        &lt;chr&gt; \"TX\", \"TX\", \"TX\", \"TX\", \"TX\", \"TX\", \"TX\", \"TX\", \"T…\n$ arrest_officer1     &lt;dbl&gt; 15882, 15882, 15969, 15001, 15001, 15001, 15001, 1…\n$ statute             &lt;chr&gt; \"481.121(b)(1)\", \"481.116(c)\", \"15\", \"30.05(d)(1)\"…\n$ class               &lt;chr&gt; \"HS\", \"HS\", \"CP\", \"PC\", \"PC\", \"PC\", \"PC\", \"PC\", \"P…\n$ severity_code_group &lt;chr&gt; \"Versa Misdemeanor Charges\", \"VT Felony Charges\", …\n$ charge              &lt;chr&gt; \"Poss Marij &lt; 2OZ\", \"Poss CS PG 2 &gt;= 1G &lt; 4G\", \"WA…\n$ charge_count        &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…\n$ given_one           &lt;chr&gt; \"CRISPIN\", \"CRISPIN\", \"MOISES\", \"FERMIN\", \"JOSE\", …\n$ given_three         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n$ given_two           &lt;chr&gt; \"III\", \"III\", NA, NA, \"CARLOS\", NA, \"GUADALUPE\", \"…\n$ individual_surname  &lt;chr&gt; \"MERCADO\", \"MERCADO\", \"DE LA CRUZ LOPEZ\", \"RODRIGU…\n$ ethnicity           &lt;chr&gt; \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", …\n$ race                &lt;chr&gt; \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", …\n$ gender_code         &lt;chr&gt; \"M\", \"M\", \"M\", \"M\", \"M\", \"F\", \"M\", \"M\", \"M\", \"M\", …\n$ apparent_age        &lt;dbl&gt; 1997, 1997, 1974, 1987, NA, 1998, 2003, NA, 1995, …\n$ charge_date         &lt;date&gt; 2023-01-03, 2023-01-03, 2023-01-21, 2023-01-22, 2…\n$ person_age          &lt;dbl&gt; 27, 27, 50, 37, NA, 26, 21, NA, 29, NA, 30, 21, 25…\n$ person_first_name   &lt;chr&gt; \"CRISPIN\", \"CRISPIN\", \"MOISES\", \"FERMIN\", \"JOSE\", …\n$ person_second_name  &lt;chr&gt; \"III\", \"III\", NA, NA, \"CARLOS\", NA, \"GUADALUPE\", \"…\n$ person_third_name   &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n$ person_last_name    &lt;chr&gt; \"MERCADO\", \"MERCADO\", \"DE LA CRUZ LOPEZ\", \"RODRIGU…\n$ officer_id          &lt;dbl&gt; 15882, 15882, 15969, 15001, 15001, 15001, 15001, 1…\n$ arrest_county       &lt;chr&gt; \"Dimmit\", \"Dimmit\", \"Dimmit\", \"Kinney\", \"Kinney\", …\n$ code                &lt;chr&gt; \"HS\", \"HS\", \"CP\", \"PC\", \"PC\", \"PC\", \"PC\", \"PC\", \"P…\n$ severity_code       &lt;chr&gt; \"Versa Misdemeanor Charges\", \"VT Felony Charges\", …\n$ person_race_abbr    &lt;chr&gt; \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", …\n$ person_gender_abbr  &lt;chr&gt; \"M\", \"M\", \"M\", \"M\", \"M\", \"F\", \"M\", \"M\", \"M\", \"M\", …\n$ arrest_state        &lt;chr&gt; \"TEXAS\", \"TEXAS\", \"TEXAS\", \"TEXAS\", \"TEXAS\", \"TEXA…",
+    "crumbs": [
+      "Maria's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-cleaning-versa.html#filter-out-unnnessary-columns",
+    "href": "01-cleaning-versa.html#filter-out-unnnessary-columns",
+    "title": "Maria’s Cleaning",
+    "section": "Filter out unnnessary columns",
+    "text": "Filter out unnnessary columns\nAfter cleaning the names of the columns, I want to remove the columns with the old column names.I will use the select function to select the columns I don’t want.\n\nversa_analysis_filter &lt;- versa_analysis_new |&gt;\n select(-c(apparent_age, given_one, given_two, given_three, individual_surname, arrest_officer1, jurisdiction, county_name, arrest_date, statute, class, severity_code_group, race, gender_code))\n\nversa_analysis_filter |&gt; glimpse()\n\nRows: 17,256\nColumns: 17\n$ primary_key        &lt;chr&gt; \"TX20234\", \"TX20234\", \"TX20235\", \"TX20237\", \"TX2023…\n$ charge             &lt;chr&gt; \"Poss Marij &lt; 2OZ\", \"Poss CS PG 2 &gt;= 1G &lt; 4G\", \"WAR…\n$ charge_count       &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …\n$ ethnicity          &lt;chr&gt; \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"…\n$ charge_date        &lt;date&gt; 2023-01-03, 2023-01-03, 2023-01-21, 2023-01-22, 20…\n$ person_age         &lt;dbl&gt; 27, 27, 50, 37, NA, 26, 21, NA, 29, NA, 30, 21, 25,…\n$ person_first_name  &lt;chr&gt; \"CRISPIN\", \"CRISPIN\", \"MOISES\", \"FERMIN\", \"JOSE\", \"…\n$ person_second_name &lt;chr&gt; \"III\", \"III\", NA, NA, \"CARLOS\", NA, \"GUADALUPE\", \"E…\n$ person_third_name  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…\n$ person_last_name   &lt;chr&gt; \"MERCADO\", \"MERCADO\", \"DE LA CRUZ LOPEZ\", \"RODRIGUE…\n$ officer_id         &lt;dbl&gt; 15882, 15882, 15969, 15001, 15001, 15001, 15001, 15…\n$ arrest_county      &lt;chr&gt; \"Dimmit\", \"Dimmit\", \"Dimmit\", \"Kinney\", \"Kinney\", \"…\n$ code               &lt;chr&gt; \"HS\", \"HS\", \"CP\", \"PC\", \"PC\", \"PC\", \"PC\", \"PC\", \"PC…\n$ severity_code      &lt;chr&gt; \"Versa Misdemeanor Charges\", \"VT Felony Charges\", \"…\n$ person_race_abbr   &lt;chr&gt; \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"…\n$ person_gender_abbr &lt;chr&gt; \"M\", \"M\", \"M\", \"M\", \"M\", \"F\", \"M\", \"M\", \"M\", \"M\", \"…\n$ arrest_state       &lt;chr&gt; \"TEXAS\", \"TEXAS\", \"TEXAS\", \"TEXAS\", \"TEXAS\", \"TEXAS…",
+    "crumbs": [
+      "Maria's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-cleaning-versa.html#removing-extra-labels-in-severity_code-and-creating-clean-column",
+    "href": "01-cleaning-versa.html#removing-extra-labels-in-severity_code-and-creating-clean-column",
+    "title": "Maria’s Cleaning",
+    "section": "Removing extra labels in “severity_code” and creating clean column",
+    "text": "Removing extra labels in “severity_code” and creating clean column\nWe noted that Versa and SPURS record charges differently under “severity_code.” We aren’t too sure if the Versa and VT label is equivalent to SPURS labels so we created a new column for cleaning purposes and we won’t remove the original column. This new column will be “severity_code_clean.”\n\nversa_code_clean &lt;- versa_analysis_filter |&gt;\n  mutate(\n    severity_code_clean = case_match(severity_code, \"Versa Misdemeanor Charges\" ~ \"Misdemeanor Charges\", \"VT Felony Charges\" ~ \"Felony Charges\", \"VT Federal/Other Charges\" ~ \"Federal/Other Charges\"), \n    .after = severity_code\n  )\n\nversa_code_clean",
+    "crumbs": [
+      "Maria's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-cleaning-versa.html#importing-cleaned-data",
+    "href": "01-cleaning-versa.html#importing-cleaned-data",
+    "title": "Maria’s Cleaning",
+    "section": "Importing cleaned data",
+    "text": "Importing cleaned data\n\n versa_code_clean |&gt;\n  write_rds(\"data-processed/01-clean-versa.rds\")",
+    "crumbs": [
+      "Maria's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-spurs-cleaning.html",
+    "href": "01-spurs-cleaning.html",
+    "title": "Olivia’s Cleaning",
+    "section": "",
+    "text": "The steps we’ll take to prepare our data:\n\nDownload the data\nImport it into our notebook\nClean up data types and columns\nExport the data for next notebook",
+    "crumbs": [
+      "Olivia's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-spurs-cleaning.html#goals-of-this-notebook",
+    "href": "01-spurs-cleaning.html#goals-of-this-notebook",
+    "title": "Olivia’s Cleaning",
+    "section": "",
+    "text": "The steps we’ll take to prepare our data:\n\nDownload the data\nImport it into our notebook\nClean up data types and columns\nExport the data for next notebook",
+    "crumbs": [
+      "Olivia's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-spurs-cleaning.html#setup",
+    "href": "01-spurs-cleaning.html#setup",
+    "title": "Olivia’s Cleaning",
+    "section": "Setup",
+    "text": "Setup\n\nlibrary(tidyverse)\nlibrary(janitor)",
+    "crumbs": [
+      "Olivia's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-spurs-cleaning.html#importing-data",
+    "href": "01-spurs-cleaning.html#importing-data",
+    "title": "Olivia’s Cleaning",
+    "section": "Importing data",
+    "text": "Importing data\nWe’re importing the data which was collected in a PIR by KUT’s Lauren McGaughy.\n\nspurs_raw &lt;- read_csv(\"data-raw/spurs_raw_data.csv\") |&gt; clean_names()\n\nRows: 50162 Columns: 17\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr (15): Arrest Date, Arrest County, Arrest Division, Arrest State, Arrest ...\ndbl  (2): Arrest ID, Person Age\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\nspurs_raw",
+    "crumbs": [
+      "Olivia's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-spurs-cleaning.html#changing-name",
+    "href": "01-spurs-cleaning.html#changing-name",
+    "title": "Olivia’s Cleaning",
+    "section": "Changing name",
+    "text": "Changing name\n\nspurs_renamed &lt;- spurs_raw |&gt; \n  rename(arrest_date_old = arrest_date,\n         charge = offense,\n         severity_code = level_group,\n         arrest_officer = arrested_by,\n         gender_code = person_sex,\n         statute = citation,\n         ethnicity_race = person_race\n         )\n\nspurs_renamed",
+    "crumbs": [
+      "Olivia's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-spurs-cleaning.html#changing-dates",
+    "href": "01-spurs-cleaning.html#changing-dates",
+    "title": "Olivia’s Cleaning",
+    "section": "Changing dates",
+    "text": "Changing dates\n\nspurs_date &lt;- spurs_renamed |&gt;\n  mutate(\n    charge_date = mdy_hm(arrest_date_old) |&gt; date()\n  )",
+    "crumbs": [
+      "Olivia's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-spurs-cleaning.html#changing-officer-column",
+    "href": "01-spurs-cleaning.html#changing-officer-column",
+    "title": "Olivia’s Cleaning",
+    "section": "Changing officer column",
+    "text": "Changing officer column\n\nspurs_officer_cleaning &lt;- spurs_date |&gt; \n  mutate(new_officer = str_split_i(arrest_officer, \" - \", 1), .after = arrest_officer,\n         id_officer = str_split_i(arrest_officer, \" - \", 2)\n         )\n\nspurs_officer_cleaning",
+    "crumbs": [
+      "Olivia's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-spurs-cleaning.html#changing-ethnicity-column",
+    "href": "01-spurs-cleaning.html#changing-ethnicity-column",
+    "title": "Olivia’s Cleaning",
+    "section": "Changing ethnicity column",
+    "text": "Changing ethnicity column\n\nspurs_race &lt;- spurs_officer_cleaning |&gt; \n  mutate(\n    person_race_abbr = case_match(ethnicity_race, \"White\" ~ \"W\", \"Hispanic\" ~ \"H\", \"Hispanic or Latino\" ~ \"H\", \"Black\" ~ \"B\", \"Asian\" ~ \"A\"),\n    person_gender_abbr = case_match(gender_code, \"M - Male\" ~ \"M\", \"F - Female\" ~ \"F\")\n    )\n\nspurs_race",
+    "crumbs": [
+      "Olivia's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-spurs-cleaning.html#changing-names-to-uppercase",
+    "href": "01-spurs-cleaning.html#changing-names-to-uppercase",
+    "title": "Olivia’s Cleaning",
+    "section": "Changing names to uppercase",
+    "text": "Changing names to uppercase\n\nspurs_uppercase &lt;- spurs_race |&gt; \n  mutate(person_first_name = str_to_upper(person_first_name),\n         person_last_name = str_to_upper(person_last_name))\n\nspurs_uppercase",
+    "crumbs": [
+      "Olivia's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-spurs-cleaning.html#creating-a-charge-count",
+    "href": "01-spurs-cleaning.html#creating-a-charge-count",
+    "title": "Olivia’s Cleaning",
+    "section": "Creating a charge count",
+    "text": "Creating a charge count\n\nspurs_charge_count &lt;- spurs_uppercase |&gt;\n  group_by(arrest_date_old, arrest_county, arrest_division, arrest_id, arrest_state, arrest_urn, arrest_officer, new_officer, id_officer, statute, code, inv_number, severity_code, charge, person_first_name, person_last_name, ethnicity_race, gender_code, person_age, charge_date, person_race_abbr, person_gender_abbr ) |&gt; \n  summarise(charge_count = n()) |&gt; \n  mutate(charge_count = as.numeric(charge_count))\n\n`summarise()` has grouped output by 'arrest_date_old', 'arrest_county',\n'arrest_division', 'arrest_id', 'arrest_state', 'arrest_urn', 'arrest_officer',\n'new_officer', 'id_officer', 'statute', 'code', 'inv_number', 'severity_code',\n'charge', 'person_first_name', 'person_last_name', 'ethnicity_race',\n'gender_code', 'person_age', 'charge_date', 'person_race_abbr'. You can\noverride using the `.groups` argument.\n\nspurs_charge_count",
+    "crumbs": [
+      "Olivia's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-spurs-cleaning.html#severity-code",
+    "href": "01-spurs-cleaning.html#severity-code",
+    "title": "Olivia’s Cleaning",
+    "section": "Severity code",
+    "text": "Severity code\n\nspurs_code_clean &lt;- spurs_charge_count |&gt; \n  mutate(severity_code_clean = str_remove(severity_code, \"SPURS \"), .after = severity_code)\n\nspurs_code_clean",
+    "crumbs": [
+      "Olivia's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-spurs-cleaning.html#selecting-which-columns-i-actually-need",
+    "href": "01-spurs-cleaning.html#selecting-which-columns-i-actually-need",
+    "title": "Olivia’s Cleaning",
+    "section": "Selecting which columns I actually need",
+    "text": "Selecting which columns I actually need\n\nspurs_clean &lt;- spurs_code_clean |&gt; ungroup() |&gt; \n  select(\n    arrest_county,\n    arrest_division,\n    arrest_id,\n    arrest_state,\n    arrest_urn,\n    arresting_officer = new_officer,\n    spurs_officer_id = id_officer,\n    statute,\n    code,\n    inv_number,\n    severity_code_clean,\n    charge,\n    person_first_name,\n    person_last_name,\n    person_age,\n    charge_date,\n    person_race_abbr,\n    person_gender_abbr,\n    charge_count\n  )\n\nspurs_clean |&gt; glimpse()\n\nRows: 41,379\nColumns: 19\n$ arrest_county       &lt;chr&gt; \"Aransas\", \"Bee\", \"Bee\", \"Cameron\", \"Cameron\", \"Ec…\n$ arrest_division     &lt;chr&gt; \"Texas Highway Patrol\", \"Texas Highway Patrol\", \"T…\n$ arrest_id           &lt;dbl&gt; 209274810, 210182331, 223969513, 213772403, 213772…\n$ arrest_state        &lt;chr&gt; \"TEXAS\", \"TEXAS\", \"TEXAS\", \"TEXAS\", \"TEXAS\", \"TEXA…\n$ arrest_urn          &lt;chr&gt; \"CMAR00171811\", \"CMAR00172979\", \"CMAR00183927\", \"C…\n$ arresting_officer   &lt;chr&gt; \"Kaitlynn King\", \"Luke William Kanz\", \"Justin K Ja…\n$ spurs_officer_id    &lt;chr&gt; \"Kk26997\", \"Lk23525\", \"Jj25825\", \"Jc05699\", \"Jc056…\n$ statute             &lt;chr&gt; \"46.02(A)\", \"481.121(B)(1)\", \"46.02(A)\", \"481.121(…\n$ code                &lt;chr&gt; \"Penal Code\", \"Health And Safety Code\", \"Penal Cod…\n$ inv_number          &lt;chr&gt; \"2022I-THP3-149480\", \"2022I-THP3-149608\", \"2022I-T…\n$ severity_code_clean &lt;chr&gt; \"Misdemeanor Charges\", \"Misdemeanor Charges\", \"Mis…\n$ charge              &lt;chr&gt; \"Unl Carrying Weapon\", \"Possession Of Marihuana &lt;2…\n$ person_first_name   &lt;chr&gt; \"WESLIN\", \"JOEL\", \"JESUS\", \"SERGIO\", \"SERGIO\", \"KI…\n$ person_last_name    &lt;chr&gt; \"LEMKE\", \"CASAS\", \"CADENA\", \"ARMENDAREZ-GARCA\", \"A…\n$ person_age          &lt;dbl&gt; 23, 27, 52, 23, 23, 29, 29, 45, 29, 17, 24, 24, 24…\n$ charge_date         &lt;date&gt; 2022-01-01, 2022-01-01, 2022-01-01, 2022-01-01, 2…\n$ person_race_abbr    &lt;chr&gt; \"W\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", \"H\", …\n$ person_gender_abbr  &lt;chr&gt; \"M\", \"M\", \"M\", \"M\", \"M\", \"F\", \"F\", \"M\", \"M\", \"M\", …\n$ charge_count        &lt;dbl&gt; 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1,…",
+    "crumbs": [
+      "Olivia's Cleaning"
+    ]
+  },
+  {
+    "objectID": "01-spurs-cleaning.html#exporting-to-data_processed",
+    "href": "01-spurs-cleaning.html#exporting-to-data_processed",
+    "title": "Olivia’s Cleaning",
+    "section": "Exporting to data_processed",
+    "text": "Exporting to data_processed\n\nspurs_clean |&gt;\nwrite_rds(\"data-processed/01-clean-spurs.rds\")",
+    "crumbs": [
+      "Olivia's Cleaning"
+    ]
+  },
+  {
+    "objectID": "03-olivia-analysis.html",
+    "href": "03-olivia-analysis.html",
+    "title": "Olivia’s Analysis",
+    "section": "",
+    "text": "Answer these questions:\n\nWhat do these numbers show us about what kinds of crimes are being committed? (Arrange descending order types of charges)\nWho is being arrested? (Gender, ethnicity, age)\nWho is doing the arresting? (County, Officers (or ID))\nHow many are drug crimes? (Filter charge by drug crimes to see how many and what type, arrange descending to see most common; Filter to grouping same charges under different names)\nWhat kind of drugs? Is it fentanyl like Abbott says?\n\nLet’s get into it."
+  },
+  {
+    "objectID": "03-olivia-analysis.html#goals-of-this-notebook",
+    "href": "03-olivia-analysis.html#goals-of-this-notebook",
+    "title": "Olivia’s Analysis",
+    "section": "",
+    "text": "Answer these questions:\n\nWhat do these numbers show us about what kinds of crimes are being committed? (Arrange descending order types of charges)\nWho is being arrested? (Gender, ethnicity, age)\nWho is doing the arresting? (County, Officers (or ID))\nHow many are drug crimes? (Filter charge by drug crimes to see how many and what type, arrange descending to see most common; Filter to grouping same charges under different names)\nWhat kind of drugs? Is it fentanyl like Abbott says?\n\nLet’s get into it."
+  },
+  {
+    "objectID": "03-olivia-analysis.html#setup",
+    "href": "03-olivia-analysis.html#setup",
+    "title": "Olivia’s Analysis",
+    "section": "Setup",
+    "text": "Setup\n\nlibrary(tidyverse)\nlibrary(janitor)"
+  },
+  {
+    "objectID": "03-olivia-analysis.html#importing-cleaned-data",
+    "href": "03-olivia-analysis.html#importing-cleaned-data",
+    "title": "Olivia’s Analysis",
+    "section": "Importing cleaned data",
+    "text": "Importing cleaned data\n\nolsdata &lt;- read_rds(\"data-processed/02-combine.rds\")\n\nolsdata"
+  },
+  {
+    "objectID": "03-olivia-analysis.html#what-do-these-numbers-show-us-about-what-kinds-of-crimes-are-being-committed",
+    "href": "03-olivia-analysis.html#what-do-these-numbers-show-us-about-what-kinds-of-crimes-are-being-committed",
+    "title": "Olivia’s Analysis",
+    "section": "What do these numbers show us about what kinds of crimes are being committed?",
+    "text": "What do these numbers show us about what kinds of crimes are being committed?\nLet’s arrange types of charges in descending order.\n\nolscrimes &lt;- olsdata |&gt; \n  group_by(charge) |&gt; \n  summarise(appearances = n()) |&gt; \n  arrange(desc(appearances))\n\nolscrimes"
+  },
+  {
+    "objectID": "03-olivia-analysis.html#who-is-being-arrested",
+    "href": "03-olivia-analysis.html#who-is-being-arrested",
+    "title": "Olivia’s Analysis",
+    "section": "Who is being arrested?",
+    "text": "Who is being arrested?\nLet’s group by gender, ethnicity, race, and age.\n\nGender:\n\nolsgender &lt;- olsdata |&gt; \n  group_by(person_gender_abbr) |&gt; \n  summarise(appearances = n()) |&gt; \n  arrange(desc(appearances))\n\nolsgender\n\n\n  \n\n\n\n\nggplot(olsgender, aes(x = reorder(person_gender_abbr, appearances), y = appearances)) +\n  geom_col(stat = \"identity\") +\n  coord_flip() +\n  labs(\n    title = \"Operation Lonestar arrests by sex\",\n    subtitle = str_wrap(\"Operation Lonestar is a program launched by Texas Governor Greg Abbott to increase safety at the southern border of the state. Arrest data from the program shows that the number of males arrested is much higher than the number of females since the programs' inception in 2021.\"),\n    caption = \"By Olivia Dilley\",\n    x = \"Sex of arrested individual\",\n    y = \"Number of arrests\"\n  )\n\nWarning in geom_col(stat = \"identity\"): Ignoring unknown parameters: `stat`\n\n\n\n\n\n\n\n\n\n** NOTE TO SELF: Why is the reorder not working properly? **\n\n\nEthnicity:\n\nolsethnicity &lt;- olsdata |&gt; \n  group_by(ethnicity) |&gt; \n  summarise(appearances = n()) |&gt;\n  arrange(desc(appearances))\n\nolsethnicity\n\n\n  \n\n\n\n\nggplot(olsethnicity, aes(x = reorder(ethnicity, appearances), y = appearances)) +\n  geom_bar(stat = \"identity\") +\n  coord_flip() +\n  labs(\n    title = \"Operation Lone Star arrests by ethnicity\",\n    subtitle = str_wrap(\"Arrest data from Operation Lone Star shows that the number of Hispanics arrested is much higher than the number of non-Hispanics since the programs' inception in 2021. Notable is the large number in the N/A category, which calls into question the practices used when recording data.\"),\n    caption = \"By Olivia Dilley\",\n    x = \"Ethnicity of arrested individual\",\n    y = \"Number of arrests\"\n  )\n\n\n\n\n\n\n\n\n\n\nAge:\n\nolsage &lt;- olsdata |&gt; \n  group_by(person_age) |&gt; \n  summarise(appearances = n()) |&gt;\n  arrange(desc(appearances)) |&gt; \n  head(15)\n\nolsage\n\n\n  \n\n\n\n\nggplot(olsage, aes(x = reorder(person_age, appearances), y = appearances)) +\n  geom_bar(stat = \"identity\") +\n  coord_flip() +\n  labs(\n    title = \"Operation Lonestar arrests by age\",\n    subtitle = str_wrap(\"Operation Lonestar arrest data shows younger people are more susceptible to being arrested for crimes falling under Operation Lonestar. Notable is the large number in the N/A category, which calls into question the practices used when recording data.\"),\n    caption = \"By Olivia Dilley\",\n    x = \"Age of arrested individual\",\n    y = \"Number of arrests\"\n  )\n\n\n\n\n\n\n\n\n** NOTE TO SELF: This chart only shows the first 20 options. Also, do we want to include NA in all of these charts? **\n\n\nAll together:\n\nolsarrestees &lt;- olsdata |&gt; \n  group_by(person_age, person_gender_abbr, ethnicity, person_race_abbr) |&gt; \n  summarise(appearances = n()) |&gt;\n  arrange(desc(appearances))\n\n`summarise()` has grouped output by 'person_age', 'person_gender_abbr',\n'ethnicity'. You can override using the `.groups` argument.\n\nolsarrestees"
+  },
+  {
+    "objectID": "03-olivia-analysis.html#who-is-doing-the-arresting-and-where",
+    "href": "03-olivia-analysis.html#who-is-doing-the-arresting-and-where",
+    "title": "Olivia’s Analysis",
+    "section": "Who is doing the arresting and where?",
+    "text": "Who is doing the arresting and where?\nLet’s look at county, officers, and officer ID.\n\nOfficers, ID, County:\n\nolsofficers &lt;- olsdata |&gt; \n  group_by(arresting_officer, officer_id, arrest_county) |&gt; \n  summarise(appearances = n()) |&gt;\n  arrange(desc(appearances))\n\n`summarise()` has grouped output by 'arresting_officer', 'officer_id'. You can\noverride using the `.groups` argument.\n\nolsofficers\n\n\n  \n\n\n\n** NOTE TO SELF: Should I make a visualization for this since we have the names of some others and some not, and they could be the same person? **"
+  },
+  {
+    "objectID": "03-olivia-analysis.html#creating-categories-for-charges",
+    "href": "03-olivia-analysis.html#creating-categories-for-charges",
+    "title": "Olivia’s Analysis",
+    "section": "Creating categories for charges",
+    "text": "Creating categories for charges\n\ncat_ols &lt;- olsdata |&gt;\n  mutate(\n    charge_cat = case_when(\n      str_detect(\n        charge,\n        \"Drug|CS|Cs|Mari|DRUG|MARI|Marj|MARJ|Man|Subs|Stash|Chem\"\n      ) ~ \"Drug\",\n      str_detect(\n        charge,\n        \"Smugg|SMUGG|Trafficking|TRAFFICKING|Trans|Bringing In\"\n      ) ~ \"Smuggling/Trafficking of Persons\",\n      str_detect(charge, \"Firearm|FIREARM|gun|GUN|Amm|Arm|Weapon|WEAPON\") ~ \"Weapon\",\n      str_detect(charge, \"Launder|LAUNDER\") ~ \"Money Laundering\",\n      str_detect(charge, \"Trespass|TRESPASS\") ~ \"Trespassing\",\n      str_detect(charge, \"Alien|ALIEN|Visa|VISA|IMMIGRATION|Immigration\") ~ \"Immigration Other\",\n      str_detect(charge, \"Evad|EVAD|Flee|FLEE\") ~ \"Evasion/Fleeing\",\n      str_detect(charge, \"Organized|Enterprise\") ~ \"Organized Crime\",\n      str_detect(charge, \"Tamp|TAMP\") ~ \"Tampering\",\n      str_detect(charge, \"Unauth\") ~ \"Unauthorized Use of Vehicle\",\n      str_detect(charge, \"Warrant|WARRANT\") ~ \"Warrant\",\n      str_detect(charge, \"Conspiracy|CONSPIRACY\") ~ \"Conspiracy\"\n    ),\n    default. = NA\n  )\n\ncat_ols |&gt;\n  count(charge_cat, charge)"
+  },
+  {
+    "objectID": "03-olivia-analysis.html#analyzing-charges-by-category",
+    "href": "03-olivia-analysis.html#analyzing-charges-by-category",
+    "title": "Olivia’s Analysis",
+    "section": "Analyzing charges by category",
+    "text": "Analyzing charges by category\n\ncat_chart &lt;- cat_ols |&gt; \n  group_by(charge_cat) |&gt; \n  summarise(charge_num = n()) |&gt; \n  arrange(desc(charge_num))\n\ncat_chart"
+  },
+  {
+    "objectID": "03-olivia-analysis.html#breaking-down-the-smuggling-charge-category",
+    "href": "03-olivia-analysis.html#breaking-down-the-smuggling-charge-category",
+    "title": "Olivia’s Analysis",
+    "section": "Breaking down the Smuggling charge category",
+    "text": "Breaking down the Smuggling charge category\nLauren has a theory that Black people in areas like Houston are being tricked into smuggling people across the border. We want to look at the smuggling category and break down how many offenses are from Black people and where those offenses took place so we can test that theory.\nFirst we’ll look at the smuggling charges for all races and tally them to see who is getting arrested for smuggling the most.\n\ncat_ols |&gt; \n  group_by(person_race_abbr, charge_cat) |&gt; \n  filter(charge_cat == \"Smuggling/Trafficking of Persons\") |&gt; \n  summarise(appearances = n()) |&gt; \n  arrange(desc(appearances))\n\n`summarise()` has grouped output by 'person_race_abbr'. You can override using\nthe `.groups` argument.\n\n\n\n  \n\n\n\nLauren thinks this number of Black smuggling offenses is still substantial for Texas’ population demographics, despite it only being 3rd highest behind Hispanic and White."
+  },
+  {
+    "objectID": "03-olivia-analysis.html#smuggling-by-county-and-race",
+    "href": "03-olivia-analysis.html#smuggling-by-county-and-race",
+    "title": "Olivia’s Analysis",
+    "section": "Smuggling by county and race",
+    "text": "Smuggling by county and race\nLet’s look at all races smuggling charges by county to see how many smuggling charges there are for each race in each specific county.\n\nsmuggle_ols &lt;- cat_ols |&gt;\n    group_by(person_race_abbr, charge_cat, arrest_county) |&gt;\n    summarise(appearances = n()) |&gt;\n    arrange(desc(appearances)) |&gt;\n    filter(charge_cat == \"Smuggling/Trafficking of Persons\") |&gt;\n    select(!charge_cat)\n\n`summarise()` has grouped output by 'person_race_abbr', 'charge_cat'. You can\noverride using the `.groups` argument.\nAdding missing grouping variables: `charge_cat`\n\nsmuggle_ols\n\n\n  \n\n\n\nThe most common is Hispanic people smuggling in areas near the border, like Kinney and El Paso county. Black smuggling in Kinney is also in the top 10."
+  },
+  {
+    "objectID": "03-olivia-analysis.html#breaking-down-offenders-charges-by-races",
+    "href": "03-olivia-analysis.html#breaking-down-offenders-charges-by-races",
+    "title": "Olivia’s Analysis",
+    "section": "Breaking down offenders’ charges by races",
+    "text": "Breaking down offenders’ charges by races\n\nWe’ll start with Black arrestees\n\nblackarrests &lt;- cat_ols |&gt;\n  group_by(person_race_abbr, charge_cat) |&gt; \n  filter(person_race_abbr == \"B\") |&gt;\n  summarise(appearances = n()) |&gt; \n  arrange(desc(appearances))\n\n`summarise()` has grouped output by 'person_race_abbr'. You can override using\nthe `.groups` argument.\n\nblackarrests\n\n\n  \n\n\n\nSo Black people are most commonly getting arrested under OLS for drugs, then smuggling. Let’s make this a graph.\n\nggplot(blackarrests, aes(x = reorder(charge_cat, appearances), y = appearances)) +\n  geom_bar(stat = \"identity\") +\n  coord_flip() +\n  labs(\n    title = \"Charge types for Black arrestees\",\n    subtitle = str_wrap(\"Operation Lonestar arrest data shows Black people are being arrested mostly for drug and smuggling related charges.\"),\n    caption = \"By Olivia Dilley\",\n    x = \"\",\n    y = \"Number of arrests\"\n  )\n\n\n\n\n\n\n\n\n\n\nNow White arrests\n\nwhitearrests &lt;- cat_ols |&gt;\n  group_by(person_race_abbr, charge_cat) |&gt; \n  filter(person_race_abbr == \"W\") |&gt;\n  summarise(appearances = n()) |&gt; \n  arrange(desc(appearances))\n\n`summarise()` has grouped output by 'person_race_abbr'. You can override using\nthe `.groups` argument.\n\nwhitearrests\n\n\n  \n\n\n\n\nggplot(whitearrests, aes(x = reorder(charge_cat, appearances), y = appearances)) +\n  geom_bar(stat = \"identity\") +\n  coord_flip() +\n  labs(\n    title = \"Charge types for white arrestees\",\n    subtitle = str_wrap(\"Operation Lonestar arrest data shows white people are being arrested mostly for drug and smuggling related charges.\"),\n    caption = \"By Olivia Dilley\",\n    x = \"\",\n    y = \"Number of arrests\"\n  )\n\n\n\n\n\n\n\n\n\n\nNow Hispanic arrests\n\nhispanicarrests &lt;- cat_ols |&gt;\n  group_by(person_race_abbr, charge_cat) |&gt; \n  filter(person_race_abbr == \"H\") |&gt;\n  summarise(appearances = n()) |&gt; \n  arrange(desc(appearances))\n\n`summarise()` has grouped output by 'person_race_abbr'. You can override using\nthe `.groups` argument.\n\nhispanicarrests\n\n\n  \n\n\n\n\nggplot(hispanicarrests, aes(x = reorder(charge_cat, appearances), y = appearances)) +\n  geom_bar(stat = \"identity\") +\n  coord_flip() +\n  labs(\n    title = \"Charge types for Hispanic arrestees\",\n    subtitle = str_wrap(\"Operation Lonestar arrest data shows Hispanic people are being arrested mostly for drug and smuggling related charges.\"),\n    caption = \"By Olivia Dilley\",\n    x = \"\",\n    y = \"Number of arrests\"\n  )\n\n\n\n\n\n\n\n\n\n\nNow Asian arrests\n\nasianarrests &lt;- cat_ols |&gt;\n  group_by(person_race_abbr, charge_cat) |&gt; \n  filter(person_race_abbr == \"A\") |&gt;\n  summarise(appearances = n()) |&gt; \n  arrange(desc(appearances))\n\n`summarise()` has grouped output by 'person_race_abbr'. You can override using\nthe `.groups` argument.\n\nasianarrests\n\n\n  \n\n\n\n\nggplot(asianarrests, aes(x = reorder(charge_cat, appearances), y = appearances)) +\n  geom_bar(stat = \"identity\") +\n  coord_flip() +\n  labs(\n    title = \"Charge types for Asian arrestees\",\n    subtitle = str_wrap(\"Operation Lonestar arrest data shows Asian people are being arrested mostly for drug and smuggling related charges.\"),\n    caption = \"By Olivia Dilley\",\n    x = \"\",\n    y = \"Number of arrests\"\n  )"
+  },
+  {
+    "objectID": "03-olivia-analysis.html#breaking-down-the-black-smuggling-category-by-county-to-test-laurens-theory",
+    "href": "03-olivia-analysis.html#breaking-down-the-black-smuggling-category-by-county-to-test-laurens-theory",
+    "title": "Olivia’s Analysis",
+    "section": "Breaking down the Black smuggling category by county to test Lauren’s theory",
+    "text": "Breaking down the Black smuggling category by county to test Lauren’s theory\nLet’s break down the smuggling category by county for Black offenders to see where they are most commonly being arrested (not where they are from necessarily).\n\nb_smuggling &lt;- cat_ols |&gt;\n  group_by(arrest_county, arrest_state, person_race_abbr, charge_cat) |&gt;\n  filter(person_race_abbr == \"B\", charge_cat == \"Smuggling/Trafficking of Persons\") |&gt; \n  summarise(appearances = n()) |&gt; \n  arrange(desc(appearances))\n\n`summarise()` has grouped output by 'arrest_county', 'arrest_state',\n'person_race_abbr'. You can override using the `.groups` argument.\n\nb_smuggling\n\n\n  \n\n\n\n\nkinney_b_smuggling &lt;- cat_ols |&gt; \n  group_by(arrest_county, arrest_state, person_race_abbr, charge_cat) |&gt; \n  filter(arrest_county == \"Kinney\", person_race_abbr == \"B\", charge_cat == \"Smuggling/Trafficking of Persons\") \n\nkinney_b_smuggling\n\n\n  \n\n\n\n\nggplot(kinney_b_smuggling, aes(x=charge_date, y=charge_count)) +\n  geom_line() +\n  labs(\n    title = \"Black smuggling arrests over time in Kinney County\",\n    subtitle = str_wrap(\"Operation Lonestar arrest data shows Black people are being arrested in Kinney for smuggling charges 4x as much as in any other county in OLS parameters. This breakdown shows those arrests over time.\"),\n    caption = \"By Olivia Dilley\",\n    x = \"Date\",\n    y = \"Charges\"\n  )"
+  },
+  {
+    "objectID": "03-olivia-analysis.html#lets-grab-this-real-quick-so-we-can-make-a-chart-in-tableau",
+    "href": "03-olivia-analysis.html#lets-grab-this-real-quick-so-we-can-make-a-chart-in-tableau",
+    "title": "Olivia’s Analysis",
+    "section": "Let’s grab this real quick so we can make a chart in Tableau",
+    "text": "Let’s grab this real quick so we can make a chart in Tableau\n\nwrite_csv(b_smuggling, \"/Users/oliviadilley/b_smuggling.csv\")\n\nNow for the graph of Black arrests by county.\n\nggplot(b_smuggling, aes(x = reorder(arrest_county, appearances), y = appearances)) +\n  geom_bar(stat = \"identity\") +\n  coord_flip() +\n  labs(\n    title = \"Black smuggling arrests by county\",\n    subtitle = str_wrap(\"Operation Lonestar arrest data shows Black people are being arrested for smuggling charges in these counties.\"),\n    caption = \"By Olivia Dilley\",\n    x = \"\",\n    y = \"Number of arrests\"\n  )\n\n\n\n\n\n\n\n\nNow let’s see the White breakdown.\n\nw_smuggling &lt;- cat_ols |&gt;\n  group_by(arrest_county, arrest_state, person_race_abbr, charge_cat) |&gt;\n  filter(person_race_abbr == \"W\", charge_cat == \"Smuggling/Trafficking of Persons\") |&gt; \n  summarise(appearances = n()) |&gt; \n  arrange(desc(appearances))\n\n`summarise()` has grouped output by 'arrest_county', 'arrest_state',\n'person_race_abbr'. You can override using the `.groups` argument.\n\nw_smuggling\n\n\n  \n\n\n\nWe’ll make a plot.\n\nggplot(w_smuggling, aes(x = reorder(arrest_county, appearances), y = appearances)) +\n  geom_bar(stat = \"identity\") +\n  coord_flip() +\n  labs(\n    title = \"White smuggling arrests by county\",\n    subtitle = str_wrap(\"Operation Lonestar arrest data shows white people are being arrested for smuggling charges in these counties.\"),\n    caption = \"By Olivia Dilley\",\n    x = \"\",\n    y = \"Number of arrests\"\n  )\n\n\n\n\n\n\n\n\nNow let’s see the Hispanic breakdown.\n\nh_smuggling &lt;- cat_ols |&gt;\n  group_by(arrest_county, arrest_state, person_race_abbr, charge_cat) |&gt;\n  filter(person_race_abbr == \"H\", charge_cat == \"Smuggling/Trafficking of Persons\") |&gt; \n  summarise(appearances = n()) |&gt; \n  arrange(desc(appearances))\n\n`summarise()` has grouped output by 'arrest_county', 'arrest_state',\n'person_race_abbr'. You can override using the `.groups` argument.\n\nh_smuggling\n\n\n  \n\n\n\nNow we’ll make a plot.\n\nggplot(h_smuggling, aes(x = reorder(arrest_county, appearances), y = appearances)) +\n  geom_bar(stat = \"identity\") +\n  coord_flip() +\n  labs(\n    title = \"Hispanic smuggling arrests by county\",\n    subtitle = str_wrap(\"Operation Lonestar arrest data shows Hispanic people are being arrested for smuggling charges in these counties.\"),\n    caption = \"By Olivia Dilley\",\n    x = \"\",\n    y = \"Number of arrests\"\n  )"
+  },
+  {
+    "objectID": "03-olivia-analysis.html#lets-make-some-tabyls-to-compare-percentages",
+    "href": "03-olivia-analysis.html#lets-make-some-tabyls-to-compare-percentages",
+    "title": "Olivia’s Analysis",
+    "section": "Let’s make some tabyls to compare percentages",
+    "text": "Let’s make some tabyls to compare percentages\n\nCounty and race tabyl\n\nolsdata |&gt;\n  tabyl(arrest_county, person_race_abbr) |&gt; \n  adorn_percentages() |&gt; \n  adorn_pct_formatting() |&gt; \n  adorn_ns()\n\n\n  \n\n\n\n\n\nOverall % of race arrests tabyl\n\nolsdata |&gt; \n  tabyl(person_race_abbr) |&gt; \n  adorn_pct_formatting() |&gt; \n  tibble()\n\n\n  \n\n\n\n\n\nSmuggling arrests by race and county %\n*** THIS DOESN’T WORK *** It should add up to 100% down each column but doesn’t.\n\ncat_ols |&gt; \n  filter(charge_cat == \"Smuggling/Trafficking of Persons\") |&gt; \n  tabyl(person_race_abbr, arrest_county) |&gt; \n  adorn_percentages() |&gt; \n  adorn_pct_formatting() |&gt; \n  tibble()\n\n\n  \n\n\n\n\n\nLooking into specific officers\nLet’s see if any officers stick out as arresting more Black people than other races. We’ll filter their arrests to be more than 100 so we can ensure that there are a large # of arrests by a specific officer in general. (Otherwise findings wouldn’t be very significant.)\n\nolsdata |&gt; \n  tabyl(arresting_officer, person_race_abbr) |&gt;\n  adorn_totals(\"col\", name = \"col_total\") |&gt; \n  adorn_totals(\"row\") |&gt; \n  tibble() |&gt; \n  arrange(desc(col_total)) |&gt; \n  filter(col_total &gt; 100)\n\n\n  \n\n\n  # adorn_percentages() |&gt; \n  # adorn_pct_formatting() |&gt; \n  # adorn_ns() |&gt;"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "index.html#what-did-we-find",
+    "href": "index.html#what-did-we-find",
+    "title": "Operation Lone Star Project",
+    "section": "What did we find?",
+    "text": "What did we find?\nOur final analysis page goes in depth on how we got to these conclusions, but here’s a breakdown of what we found for each category we looked into:\n\nDemographics: When it comes to the demographics of those arrested under Operation Lone Star, Hispanics are overwhelmingly the most arrested. Those arrested tend to be males between late teenage to young adult ages (18-27). The most common type of charge across all races is drug-related.\nDrugs: The data itself is hard to read because the types of drugs and the way charges are documented isn’t consistent throughout time or programs. Therefore, among the drug charges we were able to categorize and identify, we can’t determine if the majority of those charges are fentanyl or marijuana related. However, there were instances where we were able to determine a specific drug, and in those cases, marijuana charges overwhelmingly surpassed fentanyl charges. The same was true for solo drug charges.\nPercentage Proportionality: Percentage-wise, most of the Black arrests in any specific county are on par with other races. Typically, Hispanic people are the most arrested in any county. Though some counties have percentages of Black arrests higher than 25%, the amount of people being arrested in those counties is so low that it doesn’t stand out. Additionally, when an officer has a high number of Black arrests, they have higher numbers of Hispanic arrests too, meaning Black people aren’t being singled out. Overall, the analysis doesn’t indicate that any officer or county is arresting more Black people than any other race.",
+    "crumbs": [
+      "Project Overview"
+    ]
+  }
+]

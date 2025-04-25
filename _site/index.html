@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>VERSA analysis</title>
+<title>Operation Lone Star Project</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -35,10 +35,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -79,26 +79,42 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">VERSA analysis</span>
+    <span class="navbar-title">Operation Lone Star Project</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
     <a class="nav-link active" href="./index.html" aria-current="page"> 
-<span class="menu-text">Home</span></a>
+<span class="menu-text">Project Overview</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./01-cleaning.html"> 
-<span class="menu-text">Cleaning</span></a>
+    <a class="nav-link" href="./01-cleaning-versa.html"> 
+<span class="menu-text">Maria’s Cleaning</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./01-spurs-cleaning.html"> 
+<span class="menu-text">Olivia’s Cleaning</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./02-combine.html"> 
+<span class="menu-text">Combining the Datasets</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./03-olivia-analysis.html"> 
+<span class="menu-text">Olivia’s Analysis</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./04-analysisgraphics.html"> 
+<span class="menu-text">Final Analysis</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -108,39 +124,50 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#project-overview" id="toc-project-overview" class="nav-link active" data-scroll-target="#project-overview">Project Overview</a></li>
+  <li><a href="#what-is-operation-lonestar" id="toc-what-is-operation-lonestar" class="nav-link" data-scroll-target="#what-is-operation-lonestar">What is Operation Lonestar?</a></li>
+  <li><a href="#what-are-our-goals" id="toc-what-are-our-goals" class="nav-link" data-scroll-target="#what-are-our-goals">What are our goals?</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">VERSA analysis</h1>
-</div>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
-<div class="quarto-title-meta">
 
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<p>##Project Overview This project is dedicated to analyzing the VERSA program that looks at Operation Lone Star arrests throughout the stat poof Texas.</p>
-<p>The data was downloaded from a public records request.</p>
-<p>##What is Operation Lonestar? According to the Texas Tribune, “Operation Lone Star is a border security initiative launched by Texas Gov.&nbsp;Greg Abbott in March 2021 in response to rising border crossings, which he blames on President Joe Biden’s immigration policies.”</p>
-<p>This initiative gives the Texas National Guard access to the border, and are tasked with aiding arrests for border-related crimes including drug smuggling and human trafficking. But the success of the initative is under a lot of scrutiny.</p>
+<section id="project-overview" class="level2">
+<h2 class="anchored" data-anchor-id="project-overview">Project Overview</h2>
+<p>Maria Probert and Olivia Dilley are two senior journalism students at the University of Texas at Austin. They’re both <a href="https://journalism.utexas.edu/innovation/media-innovation-group-data-fellows">Data Fellows</a> for the UT Journalism Media Innovation Group, a part of the <a href="https://journalism.utexas.edu/innovation/dallas-morning-news-journalism-innovation-endowment">Dallas Morning News Journalism Innovation Endowment</a>.</p>
+<p>In September 2024, we started working with <a href="https://www.kut.org/people/lauren-mcgaughy">Lauren McGaughy</a>, a reporter for The Texas Newsroom, on a project looking into Operation Lone Star arrest data. She wanted us to investigate the data for any outliers or notable findings that might contradict public discourse about the arrests being made.</p>
+<p>In January 2023, Texas Highway Patrol started using the Versaterm Software Suite (VERSA) to collect arrest data under Operation Lone Star throughout the state of Texas. Prior to that, they used a program called SPURS. This project is dedicated to analyzing and synthesizing data from both programs.</p>
+<p>The data was obtained from a public records request.</p>
+</section>
+<section id="what-is-operation-lonestar" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-operation-lonestar">What is Operation Lonestar?</h2>
+<p>According to the Texas Tribune, “Operation Lone Star is a border security initiative launched by Texas Gov.&nbsp;Greg Abbott in March 2021 in response to rising border crossings, which he blames on President Joe Biden’s immigration policies.”</p>
+<p>This initiative gives the Texas National Guard access to the border, and are tasked with aiding arrests for border-related crimes including drug smuggling and human trafficking. But the success of the initiative is under a lot of scrutiny.</p>
+<p>More information can be found in this <a href="https://www.texastribune.org/2022/03/30/operation-lone-star-texas-explained/">Texas Tribune guide</a>.</p>
+<p><strong>04/2025 UPDATE</strong>: Since the Trump administration’s return to office, Texas’ state government is working collaboratively with the federal government in its border security efforts, so <a href="https://www.texastribune.org/2025/02/13/greg-abbott-texas-trump-11-billion-border-security/">the fate of Operation Lone Star is in transition</a>.</p>
+</section>
+<section id="what-are-our-goals" class="level2">
+<h2 class="anchored" data-anchor-id="what-are-our-goals">What are our goals?</h2>
 <p>This project aims to make sense of Operation Lone Star’s success.</p>
-<p>More information found in this Texas Tribune guide: https://www.texastribune.org/2022/03/30/operation-lone-star-texas-explained/</p>
-<p>This is a Quarto website.</p>
+<p>We want to answer these questions:</p>
+<ul>
+<li>What do these numbers show us about what kinds of crimes are being committed?</li>
+<li>Who is being arrested? (Gender, ethnicity, age)</li>
+<li>Who is doing the arresting? (County, Officers (or ID))</li>
+<li>How many are drug crimes?</li>
+<li>What kind of drugs? Is it Fentanyl like Abbott says?</li>
+</ul>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -178,18 +205,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -221,7 +237,45 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -256,7 +310,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
@@ -304,7 +362,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

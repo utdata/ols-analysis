@@ -1,26 +1,40 @@
----
-title: "VERSA analysis"
----
+## Project Overview
 
-##Project Overview 
-This project is dedicated to analyzing the VERSA program that looks at Operation Lone Star arrests throughout the stat poof Texas. 
+Maria Probert and Olivia Dilley are two senior journalism students at the University of Texas at Austin. They're both [Data Fellows](https://journalism.utexas.edu/innovation/media-innovation-group-data-fellows) for the UT Journalism Media Innovation Group, a part of the [Dallas Morning News Journalism Innovation Endowment](https://journalism.utexas.edu/innovation/dallas-morning-news-journalism-innovation-endowment).
 
-The data was downloaded from a public records request. 
+In September 2024, we started working with [Lauren McGaughy](https://www.kut.org/people/lauren-mcgaughy), a reporter for The Texas Newsroom, on a project looking into Operation Lone Star arrest data. She wanted us to investigate the data for any outliers or notable findings that might contradict public discourse about the arrests being made. 
 
-##What is Operation Lonestar? 
+In January 2023, Texas Highway Patrol started using the Versaterm Software Suite (VERSA) to collect arrest data under Operation Lone Star throughout the state of Texas. Prior to that, they used a program called SPURS. This project is dedicated to analyzing and synthesizing data from both programs. 
+
+The data was obtained from a public records request. 
+
+## What is Operation Lonestar? 
 According to the Texas Tribune, "Operation Lone Star is a border security initiative launched by Texas Gov. Greg Abbott in March 2021 in response to rising border crossings, which he blames on President Joe Biden’s immigration policies."
 
-This initiative gives the Texas National Guard access to the border, and are tasked with aiding arrests for border-related crimes including drug smuggling and human trafficking. But the success of the initative is under a lot of scrutiny. 
+This initiative gives the Texas National Guard access to the border, and are tasked with aiding arrests for border-related crimes including drug smuggling and human trafficking. But the success of the initiative is under a lot of scrutiny. 
+
+More information can be found in this [Texas Tribune guide]( https://www.texastribune.org/2022/03/30/operation-lone-star-texas-explained/).
+
+**04/2025 UPDATE**: Since the Trump administration's return to office, Texas' state government is working collaboratively with the federal government in its border security efforts, so [the fate of Operation Lone Star is in transition](https://www.texastribune.org/2025/02/13/greg-abbott-texas-trump-11-billion-border-security/).
+
+## What are our goals?
 
 This project aims to make sense of Operation Lone Star's success. 
 
-More information found in this Texas Tribune guide: https://www.texastribune.org/2022/03/30/operation-lone-star-texas-explained/ 
+We want to answer these questions:
 
+- What do these numbers show us about what kinds of crimes are being committed? 
+- Who is being arrested? (Gender, ethnicity, age)
+- Who is doing the arresting? (County, Officers (or ID))
+- How many are drug crimes? 
+- What kind of drugs? Is it Fentanyl like Abbott says?
 
+## What did we find?
 
+Our final analysis page goes in depth on how we got to these conclusions, but here's a breakdown of what we found for each category we looked into:
 
+- **Demographics**: When it comes to the demographics of those arrested under Operation Lone Star, Hispanics are overwhelmingly the most arrested. Those arrested tend to be males between late teenage to young adult ages (18-27). The most common type of charge across all races is drug-related.
+- **Drugs**: The data itself is hard to read because the types of drugs and the way charges are documented isn't consistent throughout time or programs. Therefore, among the drug charges we were able to categorize and identify, we can't determine if the majority of those charges are fentanyl or marijuana related. However, there were instances where we were able to determine a specific drug, and in those cases, marijuana charges overwhelmingly surpassed fentanyl charges. The same was true for solo drug charges.
+- **Percentage Proportionality**: Percentage-wise, most of the Black arrests in any specific county are on par with other races. Typically, Hispanic people are the most arrested in any county. Though some counties have percentages of Black arrests higher than 25%, the amount of people being arrested in those counties is so low that it doesn't stand out. Additionally, when an officer has a high number of Black arrests, they have higher numbers of Hispanic arrests too, meaning Black people aren't being singled out. Overall, the analysis doesn't indicate that any officer or county is arresting more Black people than any other race.
 
-
-
-This is a Quarto website.
 

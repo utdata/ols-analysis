@@ -7,5 +7,20 @@
   },
   "index.qmd": {
     "index.html": "d06fe353"
+  },
+  "03-olivia-analysis.qmd": {
+    "03-olivia-analysis.html": "f52a924e"
+  },
+  "04-analysisgraphics.qmd": {
+    "04-analysisgraphics.html": "03e1e57b"
+  },
+  "02-combine.qmd": {
+    "02-combine.html": "fb175dbd"
+  },
+  "01-spurs-cleaning.qmd": {
+    "01-spurs-cleaning.html": "62deac98"
+  },
+  "01-cleaning-versa.qmd": {
+    "01-cleaning-versa.html": "b7a1510a"
   }
 }

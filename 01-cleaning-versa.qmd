@@ -1,5 +1,5 @@
 ---
-title: "Cleaning"
+title: "Maria's Cleaning"
 ---
 
 ## Goals of this notebook
@@ -36,19 +36,13 @@ More information about Operation Lone Star is found in the index page of this we
 
 The data was obtained by a Public Records Request from KUT. 
 
-```{r}
-download.file(
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vT86k4riODyqAQeAQB0kB7NJlXDBQSJu19cUzNdJNZzUUXFLWuQHl5rmWZfXicGl2zqzztB6Hx8Gl-x/pub?output=csv","data-raw/versa_analysis.csv", mode = "wb"
-)
-```
-
 ## Importing the Data 
 
 Here we're importing the VERSA data spreadsheet that I already have downloaded to my "data-raw" folder. Then, we're adding our data to a code chunk. For simplicity it will be called "versa_analysis," which we will then peak at in order to look at what our data looks like in order to clean. 
 
 
 ```{r}
-versa_analysis<- read_csv("data-raw/versa_analysis.csv") |> clean_names()
+versa_analysis<- read_csv("data-raw/versa_raw_data.csv") |> clean_names()
 
 versa_analysis
 ```
@@ -59,6 +53,7 @@ versa_analysis |> glimpse()
 
 
 Notes for VERSA cleaning: 
+
 - "Given three" refers to two middle names, only very few individuals in the list have this listed 
 - Years are given as "apparent age" changed this to the actual age number to line up to SPURS "Person Age" 
 

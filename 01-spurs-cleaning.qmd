@@ -1,5 +1,5 @@
 ---
-title: "Cleaning"
+title: "Olivia's Cleaning"
 ---
 
 ## Goals of this notebook
@@ -99,7 +99,8 @@ spurs_uppercase
 ```{r}
 spurs_charge_count <- spurs_uppercase |>
   group_by(arrest_date_old, arrest_county, arrest_division, arrest_id, arrest_state, arrest_urn, arrest_officer, new_officer, id_officer, statute, code, inv_number, severity_code, charge, person_first_name, person_last_name, ethnicity_race, gender_code, person_age, charge_date, person_race_abbr, person_gender_abbr ) |> 
-  summarise(charge_count = n()) |> mutate(charge_count = as.numeric(charge))
+  summarise(charge_count = n()) |> 
+  mutate(charge_count = as.numeric(charge_count))
 
 spurs_charge_count
 ```

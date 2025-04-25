@@ -1,0 +1,509 @@
+---
+title: "Olivia's Analysis"
+---
+
+## Goals of this notebook
+
+Answer these questions:
+
+- What do these numbers show us about what kinds of crimes are being committed? (Arrange descending order types of charges)
+- Who is being arrested? (Gender, ethnicity, age)
+- Who is doing the arresting? (County, Officers (or ID))
+- How many are drug crimes? (Filter charge by drug crimes to see how many and what type, arrange descending to see most common; Filter to grouping same charges under different names)
+- What kind of drugs? Is it fentanyl like Abbott says?
+
+Let's get into it.
+
+
+## Setup
+
+```{r}
+#| label: setup
+#| message: false
+
+library(tidyverse)
+library(janitor)
+```
+
+
+## Importing cleaned data
+
+```{r}
+olsdata <- read_rds("data-processed/02-combine.rds")
+
+olsdata
+```
+
+
+## What do these numbers show us about what kinds of crimes are being committed?
+
+Let's arrange types of charges in descending order.
+
+```{r}
+olscrimes <- olsdata |> 
+  group_by(charge) |> 
+  summarise(appearances = n()) |> 
+  arrange(desc(appearances))
+
+olscrimes
+```
+
+
+## Who is being arrested?
+
+Let's group by gender, ethnicity, race, and age.
+
+### Gender:
+
+```{r}
+olsgender <- olsdata |> 
+  group_by(person_gender_abbr) |> 
+  summarise(appearances = n()) |> 
+  arrange(desc(appearances))
+
+olsgender
+```
+
+
+```{r}
+ggplot(olsgender, aes(x = reorder(person_gender_abbr, appearances), y = appearances)) +
+  geom_col(stat = "identity") +
+  coord_flip() +
+  labs(
+    title = "Operation Lonestar arrests by sex",
+    subtitle = str_wrap("Operation Lonestar is a program launched by Texas Governor Greg Abbott to increase safety at the southern border of the state. Arrest data from the program shows that the number of males arrested is much higher than the number of females since the programs' inception in 2021."),
+    caption = "By Olivia Dilley",
+    x = "Sex of arrested individual",
+    y = "Number of arrests"
+  )
+```
+
+** NOTE TO SELF: Why is the reorder not working properly? **
+
+### Ethnicity:
+
+```{r}
+olsethnicity <- olsdata |> 
+  group_by(ethnicity) |> 
+  summarise(appearances = n()) |>
+  arrange(desc(appearances))
+
+olsethnicity
+```
+
+```{r}
+ggplot(olsethnicity, aes(x = reorder(ethnicity, appearances), y = appearances)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(
+    title = "Operation Lone Star arrests by ethnicity",
+    subtitle = str_wrap("Arrest data from Operation Lone Star shows that the number of Hispanics arrested is much higher than the number of non-Hispanics since the programs' inception in 2021. Notable is the large number in the N/A category, which calls into question the practices used when recording data."),
+    caption = "By Olivia Dilley",
+    x = "Ethnicity of arrested individual",
+    y = "Number of arrests"
+  )
+```
+
+
+### Age:
+
+```{r}
+olsage <- olsdata |> 
+  group_by(person_age) |> 
+  summarise(appearances = n()) |>
+  arrange(desc(appearances)) |> 
+  head(15)
+
+olsage
+```
+
+```{r}
+ggplot(olsage, aes(x = reorder(person_age, appearances), y = appearances)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(
+    title = "Operation Lonestar arrests by age",
+    subtitle = str_wrap("Operation Lonestar arrest data shows younger people are more susceptible to being arrested for crimes falling under Operation Lonestar. Notable is the large number in the N/A category, which calls into question the practices used when recording data."),
+    caption = "By Olivia Dilley",
+    x = "Age of arrested individual",
+    y = "Number of arrests"
+  )
+```
+
+** NOTE TO SELF: This chart only shows the first 20 options. Also, do we want to include NA in all of these charts? **
+
+
+### All together:
+
+```{r}
+olsarrestees <- olsdata |> 
+  group_by(person_age, person_gender_abbr, ethnicity, person_race_abbr) |> 
+  summarise(appearances = n()) |>
+  arrange(desc(appearances))
+
+olsarrestees
+```
+
+
+## Who is doing the arresting and where?
+
+Let's look at county, officers, and officer ID.
+
+### Officers, ID, County:
+
+```{r}
+olsofficers <- olsdata |> 
+  group_by(arresting_officer, officer_id, arrest_county) |> 
+  summarise(appearances = n()) |>
+  arrange(desc(appearances))
+
+olsofficers
+```
+
+** NOTE TO SELF: Should I make a visualization for this since we have the names of some others and some not, and they could be the same person? **
+
+
+## Creating categories for charges
+
+```{r}
+cat_ols <- olsdata |>
+  mutate(
+    charge_cat = case_when(
+      str_detect(
+        charge,
+        "Drug|CS|Cs|Mari|DRUG|MARI|Marj|MARJ|Man|Subs|Stash|Chem"
+      ) ~ "Drug",
+      str_detect(
+        charge,
+        "Smugg|SMUGG|Trafficking|TRAFFICKING|Trans|Bringing In"
+      ) ~ "Smuggling/Trafficking of Persons",
+      str_detect(charge, "Firearm|FIREARM|gun|GUN|Amm|Arm|Weapon|WEAPON") ~ "Weapon",
+      str_detect(charge, "Launder|LAUNDER") ~ "Money Laundering",
+      str_detect(charge, "Trespass|TRESPASS") ~ "Trespassing",
+      str_detect(charge, "Alien|ALIEN|Visa|VISA|IMMIGRATION|Immigration") ~ "Immigration Other",
+      str_detect(charge, "Evad|EVAD|Flee|FLEE") ~ "Evasion/Fleeing",
+      str_detect(charge, "Organized|Enterprise") ~ "Organized Crime",
+      str_detect(charge, "Tamp|TAMP") ~ "Tampering",
+      str_detect(charge, "Unauth") ~ "Unauthorized Use of Vehicle",
+      str_detect(charge, "Warrant|WARRANT") ~ "Warrant",
+      str_detect(charge, "Conspiracy|CONSPIRACY") ~ "Conspiracy"
+    ),
+    default. = NA
+  )
+
+cat_ols |>
+  count(charge_cat, charge)
+```
+
+## Analyzing charges by category
+
+```{r}
+cat_chart <- cat_ols |> 
+  group_by(charge_cat) |> 
+  summarise(charge_num = n()) |> 
+  arrange(desc(charge_num))
+
+cat_chart
+```
+
+## Breaking down the Smuggling charge category
+
+Lauren has a theory that Black people in areas like Houston are being tricked into smuggling people across the border. We want to look at the smuggling category and break down how many offenses are from Black people and where those offenses took place so we can test that theory.
+
+First we'll look at the smuggling charges for all races and tally them to see who is getting arrested for smuggling the most. 
+
+```{r}
+cat_ols |> 
+  group_by(person_race_abbr, charge_cat) |> 
+  filter(charge_cat == "Smuggling/Trafficking of Persons") |> 
+  summarise(appearances = n()) |> 
+  arrange(desc(appearances))
+```
+Lauren thinks this number of Black smuggling offenses is still substantial for Texas' population demographics, despite it only being 3rd highest behind Hispanic and White. 
+
+## Smuggling by county and race
+
+Let's look at all races smuggling charges by county to see how many smuggling charges there are for each race in each specific county.
+
+```{r}
+smuggle_ols <- cat_ols |>
+    group_by(person_race_abbr, charge_cat, arrest_county) |>
+    summarise(appearances = n()) |>
+    arrange(desc(appearances)) |>
+    filter(charge_cat == "Smuggling/Trafficking of Persons") |>
+    select(!charge_cat)
+
+smuggle_ols
+```
+
+The most common is Hispanic people smuggling in areas near the border, like Kinney and El Paso county. Black smuggling in Kinney is also in the top 10.
+
+## Breaking down offenders' charges by races
+
+### We'll start with Black arrestees
+
+```{r}
+blackarrests <- cat_ols |>
+  group_by(person_race_abbr, charge_cat) |> 
+  filter(person_race_abbr == "B") |>
+  summarise(appearances = n()) |> 
+  arrange(desc(appearances))
+
+blackarrests
+```
+
+So Black people are most commonly getting arrested under OLS for drugs, then smuggling. Let's make this a graph.
+
+```{r}
+ggplot(blackarrests, aes(x = reorder(charge_cat, appearances), y = appearances)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(
+    title = "Charge types for Black arrestees",
+    subtitle = str_wrap("Operation Lonestar arrest data shows Black people are being arrested mostly for drug and smuggling related charges."),
+    caption = "By Olivia Dilley",
+    x = "",
+    y = "Number of arrests"
+  )
+```
+
+### Now White arrests
+
+```{r}
+whitearrests <- cat_ols |>
+  group_by(person_race_abbr, charge_cat) |> 
+  filter(person_race_abbr == "W") |>
+  summarise(appearances = n()) |> 
+  arrange(desc(appearances))
+
+whitearrests
+```
+
+```{r}
+ggplot(whitearrests, aes(x = reorder(charge_cat, appearances), y = appearances)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(
+    title = "Charge types for white arrestees",
+    subtitle = str_wrap("Operation Lonestar arrest data shows white people are being arrested mostly for drug and smuggling related charges."),
+    caption = "By Olivia Dilley",
+    x = "",
+    y = "Number of arrests"
+  )
+```
+
+### Now Hispanic arrests
+
+```{r}
+hispanicarrests <- cat_ols |>
+  group_by(person_race_abbr, charge_cat) |> 
+  filter(person_race_abbr == "H") |>
+  summarise(appearances = n()) |> 
+  arrange(desc(appearances))
+
+hispanicarrests
+```
+
+```{r}
+ggplot(hispanicarrests, aes(x = reorder(charge_cat, appearances), y = appearances)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(
+    title = "Charge types for Hispanic arrestees",
+    subtitle = str_wrap("Operation Lonestar arrest data shows Hispanic people are being arrested mostly for drug and smuggling related charges."),
+    caption = "By Olivia Dilley",
+    x = "",
+    y = "Number of arrests"
+  )
+```
+
+### Now Asian arrests
+
+```{r}
+asianarrests <- cat_ols |>
+  group_by(person_race_abbr, charge_cat) |> 
+  filter(person_race_abbr == "A") |>
+  summarise(appearances = n()) |> 
+  arrange(desc(appearances))
+
+asianarrests
+```
+
+```{r}
+ggplot(asianarrests, aes(x = reorder(charge_cat, appearances), y = appearances)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(
+    title = "Charge types for Asian arrestees",
+    subtitle = str_wrap("Operation Lonestar arrest data shows Asian people are being arrested mostly for drug and smuggling related charges."),
+    caption = "By Olivia Dilley",
+    x = "",
+    y = "Number of arrests"
+  )
+```
+
+## Breaking down the Black smuggling category by county to test Lauren's theory
+
+Let's break down the smuggling category by county for Black offenders to see where they are most commonly being arrested (not where they are from necessarily).
+
+```{r}
+b_smuggling <- cat_ols |>
+  group_by(arrest_county, arrest_state, person_race_abbr, charge_cat) |>
+  filter(person_race_abbr == "B", charge_cat == "Smuggling/Trafficking of Persons") |> 
+  summarise(appearances = n()) |> 
+  arrange(desc(appearances))
+b_smuggling
+```
+
+```{r}
+kinney_b_smuggling <- cat_ols |> 
+  group_by(arrest_county, arrest_state, person_race_abbr, charge_cat) |> 
+  filter(arrest_county == "Kinney", person_race_abbr == "B", charge_cat == "Smuggling/Trafficking of Persons") 
+
+kinney_b_smuggling
+```
+
+```{r}
+ggplot(kinney_b_smuggling, aes(x=charge_date, y=charge_count)) +
+  geom_line() +
+  labs(
+    title = "Black smuggling arrests over time in Kinney County",
+    subtitle = str_wrap("Operation Lonestar arrest data shows Black people are being arrested in Kinney for smuggling charges 4x as much as in any other county in OLS parameters. This breakdown shows those arrests over time."),
+    caption = "By Olivia Dilley",
+    x = "Date",
+    y = "Charges"
+  )
+```
+
+## Let's grab this real quick so we can make a chart in Tableau
+
+```{r}
+write_csv(b_smuggling, "/Users/oliviadilley/b_smuggling.csv")
+```
+
+
+Now for the graph of Black arrests by county.
+
+
+```{r}
+ggplot(b_smuggling, aes(x = reorder(arrest_county, appearances), y = appearances)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(
+    title = "Black smuggling arrests by county",
+    subtitle = str_wrap("Operation Lonestar arrest data shows Black people are being arrested for smuggling charges in these counties."),
+    caption = "By Olivia Dilley",
+    x = "",
+    y = "Number of arrests"
+  )
+```
+
+Now let's see the White breakdown.
+
+```{r}
+w_smuggling <- cat_ols |>
+  group_by(arrest_county, arrest_state, person_race_abbr, charge_cat) |>
+  filter(person_race_abbr == "W", charge_cat == "Smuggling/Trafficking of Persons") |> 
+  summarise(appearances = n()) |> 
+  arrange(desc(appearances))
+
+w_smuggling
+```
+We'll make a plot.
+
+```{r}
+ggplot(w_smuggling, aes(x = reorder(arrest_county, appearances), y = appearances)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(
+    title = "White smuggling arrests by county",
+    subtitle = str_wrap("Operation Lonestar arrest data shows white people are being arrested for smuggling charges in these counties."),
+    caption = "By Olivia Dilley",
+    x = "",
+    y = "Number of arrests"
+  )
+```
+
+
+Now let's see the Hispanic breakdown.
+
+```{r}
+h_smuggling <- cat_ols |>
+  group_by(arrest_county, arrest_state, person_race_abbr, charge_cat) |>
+  filter(person_race_abbr == "H", charge_cat == "Smuggling/Trafficking of Persons") |> 
+  summarise(appearances = n()) |> 
+  arrange(desc(appearances))
+
+h_smuggling
+```
+
+Now we'll make a plot.
+
+```{r}
+ggplot(h_smuggling, aes(x = reorder(arrest_county, appearances), y = appearances)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(
+    title = "Hispanic smuggling arrests by county",
+    subtitle = str_wrap("Operation Lonestar arrest data shows Hispanic people are being arrested for smuggling charges in these counties."),
+    caption = "By Olivia Dilley",
+    x = "",
+    y = "Number of arrests"
+  )
+```
+
+## Let's make some tabyls to compare percentages 
+
+### County and race tabyl
+
+```{r}
+olsdata |>
+  tabyl(arrest_county, person_race_abbr) |> 
+  adorn_percentages() |> 
+  adorn_pct_formatting() |> 
+  adorn_ns()
+```
+
+
+### Overall % of race arrests tabyl
+
+```{r}
+olsdata |> 
+  tabyl(person_race_abbr) |> 
+  adorn_pct_formatting() |> 
+  tibble()
+```
+
+
+### Smuggling arrests by race and county %
+
+*** THIS DOESN'T WORK ***
+It should add up to 100% down each column but doesn't.
+
+```{r}
+cat_ols |> 
+  filter(charge_cat == "Smuggling/Trafficking of Persons") |> 
+  tabyl(person_race_abbr, arrest_county) |> 
+  adorn_percentages() |> 
+  adorn_pct_formatting() |> 
+  tibble()
+```
+
+### Looking into specific officers
+
+Let's see if any officers stick out as arresting more Black people than other races. We'll filter their arrests to be more than 100 so we can ensure that there are a large # of arrests by a specific officer in general. (Otherwise findings wouldn't be very significant.)
+
+```{r}
+olsdata |> 
+  tabyl(arresting_officer, person_race_abbr) |>
+  adorn_totals("col", name = "col_total") |> 
+  adorn_totals("row") |> 
+  tibble() |> 
+  arrange(desc(col_total)) |> 
+  filter(col_total > 100)
+ 
+  # adorn_percentages() |> 
+  # adorn_pct_formatting() |> 
+  # adorn_ns() |> 
+```
+
